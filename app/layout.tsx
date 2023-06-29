@@ -28,7 +28,7 @@ export default function RootLayout({
               </AxiosInterceptor>
             </GlobalContextProvider>
           </AuthorizeContextProvider>
-          <ToastContainer />
+          <ToastContainer limit={3}/>
       </body>
     </html>
   )
