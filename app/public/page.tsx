@@ -14,11 +14,12 @@ async function page() {
     return (
         <Stack className='flex justify-center items-center h-screen gap-6 p-10'>
             <ThemeButton onClick={async () => {
-                await appxios.get("", {
-                    params: {
-                        loadingLock: true
-                    } as InterceptorParams
-                });
+                // await appxios.get("", {
+                //     params: {
+                //         loadingLock: true
+                //     } as InterceptorParams
+                // });
+                toast.info("dit me may");
             }}>Hello</ThemeButton>
             <h1>Hello</h1>
             <Stack className='w-full'>

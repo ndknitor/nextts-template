@@ -21,14 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthorizeContextProvider>
-          <GlobalContextProvider>
-            <AxiosInterceptor>
-              {children}
-            </AxiosInterceptor>
-          </GlobalContextProvider>
-        </AuthorizeContextProvider>
-        <ToastContainer />
+          <AuthorizeContextProvider>
+            <GlobalContextProvider>
+              <AxiosInterceptor>
+                {children}
+              </AxiosInterceptor>
+            </GlobalContextProvider>
+          </AuthorizeContextProvider>
+          <ToastContainer limit={3}/>
       </body>
     </html>
   )
