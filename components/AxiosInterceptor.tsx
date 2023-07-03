@@ -1,6 +1,6 @@
 'use client';
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import React from 'react';
 import PageLoader from './PageLoader/PageLoader';
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ const appxios = axios.create({
 });
 export interface InterceptorParams {
     loadingLock?: boolean;
+    setLoading?: Dispatch<SetStateAction<boolean>>;
 }
 export function setAuthorizationBearer(jwt?: string) {
     if (jwt) {
@@ -36,6 +37,9 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             if (params.loadingLock) {
                 setLockLoading(true);
             }
+            if (params.setLoading) {
+                params.setLoading(true);
+            }
             return config;
         }
         const requestError = (error: any) => {
@@ -49,6 +53,9 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             if (params.loadingLock) {
                 setLockLoading(false);
             }
+            if (params.setLoading) {
+                params.setLoading(true);
+            }
             return response;
         }
         const onResponseError = (error: AxiosError) => {
@@ -56,6 +63,9 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             const params = error.config?.params as InterceptorParams;
             if (params.loadingLock) {
                 setLockLoading(false);
+            }
+            if (params.setLoading) {
+                params.setLoading(true);
             }
             let message = "";
             if (error.code == "ERR_NETWORK") {
