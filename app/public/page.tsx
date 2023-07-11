@@ -12,7 +12,7 @@ import { InferType } from 'yup';
 
 function page() {
     return (
-        <Stack className='flex justify-center items-center h-screen gap-6 p-10'>
+        <Stack padding={5}>
             <ThemeButton onClick={async () => {
                 // await appxios.get("", {
                 //     params: {
