@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { DatePicker } from '@mui/x-date-pickers';
 import { InferType } from 'yup';
 
-async function page() {
+function page() {
     return (
         <Stack className='flex justify-center items-center h-screen gap-6 p-10'>
             <ThemeButton onClick={async () => {
