@@ -15,9 +15,9 @@ function page() {
         <Stack padding={5}>
             <ThemeButton onClick={async () => {
                 // await appxios.get("", {
-                //     params: {
+                //     loadAction: {
                 //         loadingLock: true
-                //     } as InterceptorParams
+                //     }
                 // });
                 toast.info("dit me may");
             }}>Hello</ThemeButton>

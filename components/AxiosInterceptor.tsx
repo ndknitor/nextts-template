@@ -1,5 +1,5 @@
 'use client';
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import React from 'react';
 import PageLoader from './PageLoader/PageLoader';
@@ -31,14 +31,16 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
     const [loading, setLoading] = useState(false);
     const [lockLoading, setLockLoading] = useState(false);
     useEffect(() => {
-        const beforeRequest = (config: InternalAxiosRequestConfig) => {
+        const beforeRequest = (config: AxiosRequestConfig) => {
             setLoading(true);
-            const params = config.params as InterceptorParams;
-            if (params.loadingLock) {
-                setLockLoading(true);
-            }
-            if (params.setLoading) {
-                params.setLoading(true);
+            const { loadAction } = config;
+            if (loadAction) {
+                if (loadAction.loadingLock) {
+                    setLockLoading(true);
+                }
+                if (loadAction.setLoading) {
+                    loadAction.setLoading(true);
+                }
             }
             return config;
         }
@@ -49,23 +51,27 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             setLoading(false);
             console.log(`Path: ${response.config.url}; Method:${response.config.method}; Status: ${response.status};
             Body:${response.config.data}`);
-            const params = response.config.params as InterceptorParams;
-            if (params.loadingLock) {
-                setLockLoading(false);
-            }
-            if (params.setLoading) {
-                params.setLoading(true);
+            const { loadAction } = response.config;
+            if (loadAction) {
+                if (loadAction.loadingLock) {
+                    setLockLoading(false);
+                }
+                if (loadAction.setLoading) {
+                    loadAction.setLoading(false);
+                }
             }
             return response;
         }
         const onResponseError = (error: AxiosError) => {
             setLoading(false);
-            const params = error.config?.params as InterceptorParams;
-            if (params.loadingLock) {
-                setLockLoading(false);
-            }
-            if (params.setLoading) {
-                params.setLoading(true);
+            const { loadAction } = error.config;
+            if (loadAction) {
+                if (loadAction.loadingLock) {
+                    setLockLoading(false);
+                }
+                if (loadAction.setLoading) {
+                    loadAction.setLoading(false);
+                }
             }
             let message = "";
             if (error.code == "ERR_NETWORK") {
