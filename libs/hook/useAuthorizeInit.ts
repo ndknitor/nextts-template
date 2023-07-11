@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import useEffectOnce from "./useEffectOnce";
 import { AuthorizeContext } from "../../context/AuthorizeContextProvider";
+import { useEffectOnce } from "usehooks-ts";
 
 export default function useAuthorizeInit() {
     const { setInitLoading, initLoading } = useContext(AuthorizeContext);
