@@ -1,4 +1,4 @@
-import useEffectOnce from "../libs/hook/useEffectOnce";
+import { useEffectOnce } from "usehooks-ts";
 
 export default function useInit() {
     useEffectOnce(() => {
