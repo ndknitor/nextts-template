@@ -17,4 +17,4 @@ CMD ["npm", "start"]
 #docker build -t nextts-template .
 
 #run the image
-#docker run -d -p 8080:3000 nextts-template
+#docker run --rm -p 8080:3000 nextts-template
