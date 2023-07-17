@@ -4,15 +4,16 @@ import SignInRequest from '@/objects/requests/SignInRequest'
 import React from 'react'
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { Stack } from '@mui/material';
-import appxios, { InterceptorParams } from '@/components/AxiosInterceptor';
 import ValidationWrap from '@/components/ValidationWrap/ValidationWrap';
 import { toast } from 'react-toastify';
 import { DatePicker } from '@mui/x-date-pickers';
 import { InferType } from 'yup';
+import Link from 'next/link';
 
 function page() {
     return (
         <Stack padding={5}>
+            <Link href="/public/about">About</Link>
             <ThemeButton onClick={async () => {
                 // await appxios.get("", {
                 //     loadAction: {
@@ -29,8 +30,8 @@ function page() {
                         toast.success(values.email);
                     }}>
                     <Stack rowGap={3}>
-                        <ThemeTextInput name='email' placeholder='Email' />
-                        <ThemeTextInput name='password' type='password' placeholder='Password' />
+                        <ThemeTextInput name='email' label='Email' />
+                        <ThemeTextInput name='password' type='password' label='Password' />
                         <ThemeButton type='submit'>Submit</ThemeButton>
                     </Stack>
                 </ValidationWrap>
