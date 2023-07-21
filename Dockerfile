@@ -18,3 +18,4 @@ CMD ["npm", "start"]
 
 #run the image
 #docker run --rm -p 8080:3000 nextts-template
+# switch -u $(id -u ${USER}):$(id -g ${USER}) 
