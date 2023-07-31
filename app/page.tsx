@@ -9,16 +9,18 @@ import { toast } from 'react-toastify';
 import { DatePicker } from '@mui/x-date-pickers';
 import { InferType } from 'yup';
 import Link from 'next/link';
-import FadeIn from '@/components/FadeIn/FadeIn';
+import FadeInUp from '@/components/FadeInUp/FadeInUp';
+import FadeInDown from '@/components/FadeInDown/FadeInDown';
+import FadeZoomIn from '@/components/FadeZoomIn/FadeZoomIn';
 
 function page() {
     return (
-        <FadeIn>
+        <FadeInDown>
             <Stack padding={5}>
                 <Link href="/public/about">About</Link>
                 <ThemeButton onClick={async () => {
                     // await appxios.get("", {
-                    //     loadAction: {
+                    //     loadActiore
                     //         loadingLock: true
                     //     }
                     // });
@@ -38,11 +40,9 @@ function page() {
                         </Stack>
                     </ValidationWrap>
                 </Stack>
-
-
                 <DatePicker />
             </Stack>
-        </FadeIn>
+        </FadeInDown>
     )
 }
 
