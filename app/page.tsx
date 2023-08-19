@@ -17,14 +17,8 @@ import useAsyncEffect from 'use-async-effect';
 import moment from 'moment';
 
 function page() {
-    const [date, setDate] = useState<Date>();
-    useAsyncEffect(async () => {
-        const response = await appxios.get<{ date: Date }>("http://13.212.116.185:5000/main");
-        setDate(response.data.date);
-    }, []);
     return (
         <FadeInDown>
-            <h1>{date && moment(date).format("YYYY:MM:DD HH:mm:ss")}</h1>
             <Stack padding={5}>
                 <Link href="/public/about">About</Link>
                 <ThemeButton onClick={async () => {
