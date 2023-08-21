@@ -23,6 +23,11 @@ export function toFormData(obj: any, formData = new FormData(), namespace = '') 
     return formData;
 }
 
+export function getPropertyName(propertyFunction: Function): string {
+    const token = propertyFunction.toString().split('.');
+    return token[token.length - 1];
+}
+
 export function toJsonString(obj: Object) {
     return JSON.stringify(obj);
 }
