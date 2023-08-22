@@ -1,19 +1,21 @@
 import { HttpStatusCode } from "axios";
 import { NextApiRequest, NextApiResponse } from "next"
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers["Revalidate-Token"];
     if (token !== process.env.REVALIDATE_TOKEN) {
-        return res.status(401).json({ message: 'Invalid token' });
+        return res.status(HttpStatusCode.Forbidden).json({ message: 'Invalid token', revalidated: false });
     }
-    const path = req.query["path"];
-    if (!path) {
-        return res.status(HttpStatusCode.BadRequest).json({ message: "Path is required" });
+    const paths = req.body as string[];
+    if (!paths) {
+        return res.status(HttpStatusCode.BadRequest).json({ message: "Paths is required", revalidated: false });
     }
     try {
-        await res.revalidate(path as string);
-        return res.json({ revalidated: true });
+        paths.map(path => {
+            res.revalidate(path);
+        });
+        return res.status(HttpStatusCode.Ok).json({ revalidated: true, message: "Revalidate successfully" });
     } catch (err) {
-        return res.status(500).send('Error revalidating');
+        return res.status(HttpStatusCode.InternalServerError).send({ message: "Server error", revalidated: false });
     }
 }
