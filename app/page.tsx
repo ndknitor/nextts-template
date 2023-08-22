@@ -1,22 +1,30 @@
 'use client'
 import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput'
-import SignInRequest from '@/objects/requests/SignInRequest'
-import React, { useState } from 'react'
+import React from 'react'
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
-import { Fade, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
+import * as Yup from 'yup';
 import ValidationWrap from '@/components/ValidationWrap/ValidationWrap';
 import { toast } from 'react-toastify';
 import { DatePicker } from '@mui/x-date-pickers';
 import { InferType } from 'yup';
 import Link from 'next/link';
-import FadeInUp from '@/components/FadeInUp/FadeInUp';
 import FadeInDown from '@/components/FadeInDown/FadeInDown';
-import FadeZoomIn from '@/components/FadeZoomIn/FadeZoomIn';
-import appxios from '@/components/AxiosInterceptor';
-import useAsyncEffect from 'use-async-effect';
-import moment from 'moment';
 
 function page() {
+    const SignInRequest = Yup.object().shape({
+        email: Yup
+            .string()
+            .email('Invalid email')
+            .required('Email is required')
+            .default(""),
+        password: Yup
+            .string()
+            .min(6, 'Password must be at least 6 characters')
+            .required('Password is required')
+            .default("")
+    });
+
     return (
         <FadeInDown>
             <Stack padding={5}>
