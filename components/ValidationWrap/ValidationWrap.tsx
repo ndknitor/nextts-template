@@ -7,7 +7,6 @@ interface ValidationWrapProps<T extends Maybe<AnyObject>> extends PropsWithChild
     initialValues?: T;
     onSubmit: ((values: T, formikHelpers: FormikHelpers<T>) => void | Promise<T>) & ((values: T, { setSubmitting }: FormikHelpers<T>) => void);
 }
-
 function ValidationWrap<T extends Maybe<AnyObject>>(props: ValidationWrapProps<T>) {
     return (
         <Formik

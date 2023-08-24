@@ -27,13 +27,9 @@ export function getPropertyName(propertyFunction: Function): string {
     const token = propertyFunction.toString().split('.');
     return token[token.length - 1];
 }
+
 export function toQueryString(obj: any) {
-    const url = new URLSearchParams();
-    for (const key in obj) {
-        const value = obj[key];
-        if (value !== undefined && value !== null)
-            url.append(key, value);
-    }
+    const url = new URLSearchParams(obj);
     return `?${url.toString()}`;
 }
 
