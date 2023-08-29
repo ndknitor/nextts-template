@@ -1,21 +1,27 @@
 import { HttpStatusCode } from "axios";
-import { NextApiRequest, NextApiResponse } from "next"
+import { revalidatePath } from "next/cache";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    const token = req.headers["Revalidate-Token"];
+export async function POST(req: Request) {
+    const token = req.headers.get("Revalidate-Token");
+    const body = { message: 'Invalid token', revalidated: false };
     if (token !== process.env.REVALIDATE_TOKEN) {
-        return res.status(HttpStatusCode.Forbidden).json({ message: 'Invalid token', revalidated: false });
+        return NextResponse.json(body, { status: HttpStatusCode.Forbidden });
     }
-    const paths = req.body as string[];
+    const paths = (await req.json()) as string[];
     if (!paths) {
-        return res.status(HttpStatusCode.BadRequest).json({ message: "Paths is required", revalidated: false });
+        body.message = "Paths is required";
+        return NextResponse.json(body, { status: HttpStatusCode.BadRequest });
     }
     try {
         paths.map(path => {
-            res.revalidate(path);
+            revalidatePath(path);
         });
-        return res.status(HttpStatusCode.Ok).json({ revalidated: true, message: "Revalidate successfully" });
+        body.revalidated = true;
+        body.message = "Revalidate successfully";
+        return NextResponse.json(body, { status: HttpStatusCode.Ok });
     } catch (err) {
-        return res.status(HttpStatusCode.InternalServerError).send({ message: "Server error", revalidated: false });
+        body.message = "Server error";
+        return NextResponse.json(body, { status: HttpStatusCode.InternalServerError });
     }
 }
