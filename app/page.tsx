@@ -4,12 +4,12 @@ import React from 'react'
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { Stack } from '@mui/material';
 import * as Yup from 'yup';
-import ValidationWrap from '@/components/ValidationWrap/ValidationWrap';
 import { toast } from 'react-toastify';
 import { DatePicker } from '@mui/x-date-pickers';
 import { InferType } from 'yup';
 import Link from 'next/link';
 import FadeInDown from '@/components/FadeInDown/FadeInDown';
+import Validation from '@/components/Validation/Validation';
 
 function page() {
     const SignInRequest = Yup.object().shape({
@@ -39,8 +39,8 @@ function page() {
                 }}>Hello</ThemeButton>
                 <h1>Hello</h1>
                 <Stack>
-                    <ValidationWrap<InferType<typeof SignInRequest>>
-                        validationSchema={SignInRequest}
+                    <Validation
+                        schema={SignInRequest}
                         onSubmit={(values) => {
                             toast.success(values.email);
                         }}>
@@ -49,7 +49,7 @@ function page() {
                             <ThemeTextInput name='password' type='password' label='Password' />
                             <ThemeButton type='submit'>Submit</ThemeButton>
                         </Stack>
-                    </ValidationWrap>
+                    </Validation>
                 </Stack>
                 <DatePicker />
             </Stack>

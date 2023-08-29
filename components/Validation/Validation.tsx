@@ -2,16 +2,16 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import React, { PropsWithChildren } from 'react'
 import { AnyObject, Maybe, ObjectSchema } from 'yup';
 
-interface ValidationWrapProps<T extends Maybe<AnyObject>> extends PropsWithChildren {
-    validationSchema: ObjectSchema<T>;
+interface ValidationProps<T extends Maybe<AnyObject>> extends PropsWithChildren {
+    schema: ObjectSchema<T>;
     initialValues?: T;
     onSubmit: ((values: T, formikHelpers: FormikHelpers<T>) => void | Promise<T>) & ((values: T, { setSubmitting }: FormikHelpers<T>) => void);
 }
-function ValidationWrap<T extends Maybe<AnyObject>>(props: ValidationWrapProps<T>) {
+function Validation<T extends Maybe<AnyObject>>(props: ValidationProps<T>) {
     return (
         <Formik
-            validationSchema={props.validationSchema}
-            initialValues={props.initialValues || props.validationSchema.getDefault()}
+            validationSchema={props.schema}
+            initialValues={props.initialValues || props.schema.getDefault()}
             onSubmit={props.onSubmit}>
             {() => (
                 <Form>
@@ -22,4 +22,4 @@ function ValidationWrap<T extends Maybe<AnyObject>>(props: ValidationWrapProps<T
     )
 }
 
-export default ValidationWrap
+export default Validation
