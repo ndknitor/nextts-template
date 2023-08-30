@@ -39,19 +39,17 @@ function page() {
                     toast.info("dit me may");
                 }}>Hello</ThemeButton>
                 <h1>Hello</h1>
-                <Stack>
-                    <Validation
-                        schema={SignInRequest}
-                        onSubmit={(values) => {
-                            toast.success(values.email);
-                        }}>
-                        <Stack rowGap={3}>
-                            <ThemeTextInput name='email' label='Email' />
-                            <ThemeTextInput name='password' type='password' label='Password' />
-                            <ThemeButton type='submit'>Submit</ThemeButton>
-                        </Stack>
-                    </Validation>
-                </Stack>
+                <Validation
+                    schema={SignInRequest}
+                    onSubmit={(values) => {
+                        toast.success(values.email);
+                    }}>
+                    <Stack rowGap={3}>
+                        <ThemeTextInput name='email' label='Email' />
+                        <ThemeTextInput name='password' type='password' label='Password' />
+                        <ThemeButton type='submit'>Submit</ThemeButton>
+                    </Stack>
+                </Validation>
                 <DatePicker />
             </Stack>
         </FadeInDown>
