@@ -1,6 +1,6 @@
-import StandardReponse from "./StandardReponse";
+import { RangeResponse } from "./RangeResponse";
 
-export interface PagingResponse<T> extends StandardReponse {
+export interface PagingResponse<T> extends RangeResponse<T> {
     data: T[];
     maxPage: number;
     totalRecord: number;
