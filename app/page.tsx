@@ -11,20 +11,9 @@ import FadeInDown from '@/components/FadeInDown/FadeInDown';
 import Validation from '@/components/Validation/Validation';
 import appxios from '@/components/AxiosInterceptor';
 import axios from 'axios';
+import SignInRequest from '@/objects/requests/SignInRequest';
 
 function page() {
-    const SignInRequest = Yup.object().shape({
-        email: Yup
-            .string()
-            .email('Invalid email')
-            .required('Email is required')
-            .default(""),
-        password: Yup
-            .string()
-            .min(6, 'Password must be at least 6 characters')
-            .required('Password is required')
-            .default("")
-    });
 
     return (
         <FadeInDown>
