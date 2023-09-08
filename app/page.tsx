@@ -1,27 +1,34 @@
 'use client'
 import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { Stack } from '@mui/material';
-import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { DatePicker } from '@mui/x-date-pickers';
-import Link from 'next/link';
 import FadeInDown from '@/components/FadeInDown/FadeInDown';
+import moment from 'moment';
+import { readExcel } from '@/libs/functions';
+import { DatePicker } from '@mui/x-date-pickers';
 import Validation from '@/components/Validation/Validation';
-import appxios from '@/components/AxiosInterceptor';
-import axios from 'axios';
+import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
+import Link from 'next/link';
+import appxios from '@/components/AxiosInterceptor';
 
 function page() {
-    
+
+    const onInputFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const fileInput = e.target;
+        const files = fileInput.files;
+        console.log(await readExcel(files![0]));
+    }
+
     return (
         <FadeInDown>
             <Stack padding={5}>
+                <input type="file" onChange={onInputFileChange} />
                 <Link href="/public/about">About</Link>
                 <ThemeButton onClick={async () => {
                     // await appxios.get("", {
-                    //     loadActiore
+                    //     loadAction: {
                     //         loadingLock: true
                     //     }
                     // });
