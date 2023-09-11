@@ -16,7 +16,6 @@ const GlobalContext = createContext<ContextProps>({
 
 export const GlobalContextProvider = ({ children }: PropsWithChildren) => {
     const [userId, setUserId] = useState('');
-
     return (
         <GlobalContext.Provider value={{ userId, setUserId }}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
