@@ -4,6 +4,7 @@ import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext,
 import React from 'react';
 import PageLoader from './PageLoader/PageLoader';
 import { toast } from 'react-toastify';
+import { useGlobalContext } from '@/context/GlobalContextProvider';
 const appxios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     timeout: process.env.NEXT_PUBLIC_REQUEST_TIMEOUT | 3000,
@@ -30,6 +31,7 @@ export function useAxiosLoading() {
 export function AxiosInterceptor({ children }: PropsWithChildren) {
     const [loading, setLoading] = useState(false);
     const [lockLoading, setLockLoading] = useState(false);
+    const { languages } = useGlobalContext();
     useEffect(() => {
         const beforeRequest = (config: AxiosRequestConfig) => {
             setLoading(true);
@@ -75,10 +77,10 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             }
             let message = "";
             if (error.code == "ERR_NETWORK") {
-                message = "Lỗi kết nối với máy chủ, vui lòng thử lại sau"
+                message = languages.axios.serverError;
             }
             else if (error.code == "ECONNABORTED") {
-                message = "Lỗi kết nối mạng, vui lòng thử lại sau";
+                message = languages.axios.internetError;
             }
             console.log(message);
             toast.error(message, {
