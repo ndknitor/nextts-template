@@ -21,3 +21,5 @@ export function readExcel<T>(file: File, header: number = 0, sheetIndex = 0): Pr
         reader.readAsBinaryString(file);
     });
 }
+
+export const nameof = <T>(name: keyof T) => name;
