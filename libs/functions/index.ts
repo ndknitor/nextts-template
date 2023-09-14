@@ -22,4 +22,15 @@ export function readExcel<T>(file: File, header: number = 0, sheetIndex = 0): Pr
     });
 }
 
+export function downloadFile(url: string, filename?: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    if (filename) {
+        link.download = filename;
+    }
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 export const nameof = <T>(name: keyof T) => name;
