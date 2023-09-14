@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify'
 import { GlobalContextProvider } from '@/context/GlobalContextProvider'
 import { AxiosInterceptor } from '@/components/AxiosInterceptor'
 import 'react-toastify/dist/ReactToastify.css';
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,6 +26,8 @@ export default function RootLayout({
         <AuthorizeContextProvider>
           <GlobalContextProvider>
             <AxiosInterceptor>
+              <Link href="/">Index</Link>
+              <Link href="/public/about">About</Link>
               {children}
             </AxiosInterceptor>
           </GlobalContextProvider>
