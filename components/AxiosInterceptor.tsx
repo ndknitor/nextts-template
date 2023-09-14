@@ -5,6 +5,18 @@ import React from 'react';
 import PageLoader from './PageLoader/PageLoader';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '@/context/GlobalContextProvider';
+class FetchWrapper {
+    private baseUrl: string;
+    constructor() {
+        this.baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    }
+    async fetch(url: string, options?: RequestInit): Promise<Response> {
+        const fullUrl = this.baseUrl + url;
+        return fetch(fullUrl, options);
+    }
+}
+export const fetcher = new FetchWrapper();
+
 const appxios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     timeout: process.env.NEXT_PUBLIC_REQUEST_TIMEOUT | 3000,
@@ -50,6 +62,7 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             return Promise.reject(error);
         }
         const onResponse = (response: AxiosResponse<any, any>) => {
+
             setLoading(false);
             console.log(`Path: ${response.config.url}; Method:${response.config.method}; Status: ${response.status};
             Body:${response.config.data}`);

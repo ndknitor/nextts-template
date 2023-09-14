@@ -1,10 +1,9 @@
-'use client'
-import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput'
-import React, { ChangeEvent } from 'react'
+'use client';
+import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput';
+import React, { ChangeEvent, useEffect } from 'react';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { Stack } from '@mui/material';
 import FadeInDown from '@/components/FadeInDown/FadeInDown';
-import moment from 'moment';
 import { readExcel } from '@/libs/functions';
 import { DatePicker } from '@mui/x-date-pickers';
 import Validation from '@/components/Validation/Validation';
@@ -13,14 +12,14 @@ import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
 
-function page() {
+export default function page() {
 
     const onInputFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const fileInput = e.target;
         const files = fileInput.files;
         console.log(await readExcel(files![0]));
-    }
-
+    };
+    
     return (
         <FadeInDown>
             <Stack padding={5}>
@@ -49,7 +48,5 @@ function page() {
                 <DatePicker />
             </Stack>
         </FadeInDown>
-    )
+    );
 }
-
-export default page
