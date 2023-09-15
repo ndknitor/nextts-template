@@ -5,17 +5,6 @@ import React from 'react';
 import PageLoader from './PageLoader/PageLoader';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '@/context/GlobalContextProvider';
-class FetchWrapper {
-    private baseUrl: string;
-    constructor() {
-        this.baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    }
-    async fetch(url: string, options?: RequestInit): Promise<Response> {
-        const fullUrl = this.baseUrl + url;
-        return fetch(fullUrl, options);
-    }
-}
-export const fetcher = new FetchWrapper();
 
 const appxios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,

@@ -1,4 +1,3 @@
-'use client';
 import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput';
 import React, { ChangeEvent, useEffect } from 'react';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
@@ -11,19 +10,10 @@ import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
-
 export default function page() {
-
-    const onInputFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const fileInput = e.target;
-        const files = fileInput.files;
-        console.log(await readExcel(files![0]));
-    };
-    
     return (
         <FadeInDown>
             <Stack padding={5}>
-                <input type="file" onChange={onInputFileChange} />
                 <Link href="/public/about">About</Link>
                 <ThemeButton onClick={async () => {
                     // await appxios.get("", {
