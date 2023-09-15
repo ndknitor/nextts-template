@@ -14,12 +14,11 @@ export function findMenu(menuArray: MenuScaff[], nameToFind: string): MenuScaff[
 
     function searchMenus(menuArray: MenuScaff[]) {
         for (const menu of menuArray) {
-            if (menu.name.includes(nameToFind)) {
-                foundMenus.push(menu);
-            }
-
             if (menu.childrens.length > 0) {
                 searchMenus(menu.childrens);
+            }
+            else if (menu.name.includes(nameToFind)) {
+                foundMenus.push(menu);
             }
         }
     }
