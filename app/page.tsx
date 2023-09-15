@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
+import MenuScaff from '@/objects/MenuScaff';
 export default function page() {
     return (
         <FadeInDown>
