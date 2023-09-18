@@ -1,7 +1,6 @@
 import appxios from "@/components/AxiosInterceptor";
 import User from "@/objects/entities/User";
-import { PagingResponse } from "@/objects/responses/PagingResponse";
-import { Dispatch, SetStateAction, use } from "react";
+import { Dispatch, SetStateAction } from "react";
 import Service from "./Service";
 import SingleResponse from "@/objects/responses/SingleResponse";
 import { fetcher } from "@/utils/Fetcher";
