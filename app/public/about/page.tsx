@@ -9,17 +9,7 @@ interface Params {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
 }
-export async function generateMetadata(params: Params): Promise<Metadata> {
-    const title = fetchData();
-    return {
-        title: title,
-    }
-}
-export function fetchData() {
-    return randomUUID();
-}
 function about(params: Params) {
-    //const a: string = uuid || fetchData();
     return (
         <div></div>
     )

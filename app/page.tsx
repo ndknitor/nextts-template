@@ -1,17 +1,16 @@
+'use client'
 import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput';
-import React, { ChangeEvent, useEffect } from 'react';
+import React from 'react';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { Stack } from '@mui/material';
 import FadeInDown from '@/components/FadeInDown/FadeInDown';
-import { readExcel } from '@/libs/functions';
 import { DatePicker } from '@mui/x-date-pickers';
 import Validation from '@/components/Validation/Validation';
 import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
-import MenuScaff from '@/objects/MenuScaff';
-export default function page() {
+export default async function page() {
     return (
         <FadeInDown>
             <Stack padding={5}>
