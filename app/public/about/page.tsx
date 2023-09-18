@@ -1,5 +1,6 @@
-import { randomUUID } from 'crypto'
-import { Metadata } from 'next'
+'use client'
+import PagingRequest from '@/objects/requests/PagingRequest'
+import queryString from 'query-string'
 import React from 'react'
 // export const metadata: Metadata = {
 //     title: 'Dit me may',
@@ -9,9 +10,13 @@ interface Params {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
 }
-function about(params: Params) {
+function about() {
+    const onClick = () => {
+    }
     return (
-        <div></div>
+        <div>
+            <button onClick={onClick}>Click</button>
+        </div>
     )
 }
 
