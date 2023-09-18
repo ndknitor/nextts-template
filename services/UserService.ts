@@ -4,6 +4,8 @@ import { Dispatch, SetStateAction } from "react";
 import Service from "./Service";
 import SingleResponse from "@/objects/responses/SingleResponse";
 import { fetcher } from "@/utils/Fetcher";
+import PagingRequest from "@/objects/requests/PagingRequest";
+import queryString from "query-string";
 const tags = ["User"];
 const revalidate = 60;
 const context = "/api/user";
@@ -13,8 +15,8 @@ export default class UserService extends Service {
         super()
         this.setLoading = setLoading ? setLoading : () => false;
     }
-    async get(page: number, size: number = 50) {
-        const result = await fetcher.fetch('/main?page=' + page, { next: { revalidate: revalidate, tags: tags } });
+    async get(request : PagingRequest) {
+        const result = await fetcher.fetch('/main?'+queryString.stringify(request), { next: { revalidate: revalidate, tags: tags } });
         return (await result.json()) as number[];
     }
     async insert(user: User) {

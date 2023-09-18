@@ -1,6 +1,6 @@
 'use client'
 import PagingRequest from '@/objects/requests/PagingRequest'
-import queryString from 'query-string'
+import { NEXT_PUBLIC_MAXPAGE } from '@/utils/env'
 import React from 'react'
 // export const metadata: Metadata = {
 //     title: 'Dit me may',
@@ -11,11 +11,8 @@ interface Params {
     searchParams: { [key: string]: string | string[] | undefined }
 }
 function about() {
-    const onClick = () => {
-    }
     return (
         <div>
-            <button onClick={onClick}>Click</button>
         </div>
     )
 }
