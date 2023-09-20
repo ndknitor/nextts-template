@@ -1,15 +1,13 @@
 import { animated, useSpring } from '@react-spring/web';
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 
 function FadeInUp(props: PropsWithChildren) {
-    const animation = useSpring({
-        opacity: 1,
-        y: 0,
-        from: { opacity: 0, y: -24 }, // Start the animation from opacity 0 (completely transparent)
-        config: { duration: 300 }, // You can adjust the duration as needed
-    });
+    const [style, animate] = useSpring({ opacity: 0, y: -24 }, [])
+    useEffect(() => {
+        animate({ opacity: 1, y: 0 } )
+    }, []);
     return (
-        <animated.div style={animation}>
+        <animated.div style={style}>
             {props.children}
         </animated.div>
     )

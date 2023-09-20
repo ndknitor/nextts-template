@@ -1,17 +1,15 @@
 import { animated, useSpring } from '@react-spring/web';
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 interface FadeZoomInProps extends PropsWithChildren {
     duration?: number;
 }
 function FadeZoomIn(props: FadeZoomInProps) {
-    const animation = useSpring({
-        opacity: 1,
-        scale: 1,
-        from: { opacity: 0, scale: 0 }, // Start the animation from opacity 0 (completely transparent)
-        config: { duration: props.duration || 300 }, // You can adjust the duration as needed
-    });
+    const [style, animate] = useSpring({ opacity: 0, scale: 0 }, [])
+    useEffect(() => {
+        animate({ opacity: 1, scale: 1 } )
+    }, []);
     return (
-        <animated.div style={animation}>
+        <animated.div style={style}>
             {props.children}
         </animated.div>
     )
