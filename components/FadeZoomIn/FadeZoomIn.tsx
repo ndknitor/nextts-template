@@ -7,7 +7,7 @@ function FadeZoomIn(props: FadeZoomInProps) {
     const [style, animate] = useSpring({ opacity: 0, scale: 0 }, [])
     useEffect(() => {
         animate({ opacity: 1, scale: 1 } )
-    }, []);
+    }, [animate]);
     return (
         <animated.div style={style}>
             {props.children}
