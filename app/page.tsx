@@ -10,9 +10,11 @@ import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
-export default async function page() {
+import Role from '@/objects/Role';
+export default function page() {
     return (
         <FadeInDown>
+            <h1>{Role[Role.Admin]}</h1>
             <Stack padding={5}>
                 <Link href="/public/about">About</Link>
                 <ThemeButton onClick={async () => {
