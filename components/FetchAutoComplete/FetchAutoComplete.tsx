@@ -7,8 +7,13 @@ interface Option<T> {
     value: T;
 }
 
+export interface AutoCompleteFetchResponse<T> {
+    options: Option<T>[];
+    hasMore: boolean;
+}
+
 interface FetchAutoCompleteProps<T> {
-    fetch: (query: string, page: number) => Promise<{ options: Option<T>[], hasMore: boolean }>;
+    fetch: (query: string, page: number) => Promise<AutoCompleteFetchResponse<T>>;
     placeholder: string;
     onChange: (selectedOption: Option<T> | null) => void;
     debounce?: number | 600
