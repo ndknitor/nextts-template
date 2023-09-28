@@ -102,3 +102,14 @@ function FetchAutoComplete<T>(props: FetchAutoCompleteProps<T>) {
 }
 
 export default FetchAutoComplete
+
+
+{/* <FetchAutoComplete
+placeholder={'Number'}
+fetch={async (query, page) => {
+    const response = await appxios.get<number[]>(`http://localhost:5000/main?query=${query}&page=${page}`);
+    return { hasMore: true, options: response.data.map(item => ({ label: item.toString(), value: item })) };
+}}
+onChange={option => {
+    console.log(option?.value);
+}} /> */}

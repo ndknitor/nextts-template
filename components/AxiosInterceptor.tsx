@@ -88,7 +88,7 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             toast.error(message, {
                 position: 'bottom-right'
             });
-            return Promise.reject(error);
+            return Promise.resolve(error);
         }
         appxios.interceptors.request.use(beforeRequest, requestError);
         const interceptor = appxios.interceptors.response.use(onResponse, onResponseError);
