@@ -8,7 +8,7 @@ interface Option<T> {
 }
 
 interface FetchAutoCompleteProps<T> {
-    fetch: (query: string, page: number) => Promise<Option<T>[]>;
+    fetch: (query: string, page: number) => Promise<{ options: Option<T>[], hasMore: boolean }>;
     placeholder: string;
     onChange: (selectedOption: Option<T> | null) => void;
     debounce?: number | 600
@@ -31,15 +31,12 @@ function FetchAutoComplete<T>(props: FetchAutoCompleteProps<T>) {
                 if (active) {
                     if (page === 1) {
                         // If it's the first page, replace the existing options
-                        setOptions(response);
+                        setOptions(response.options);
                     } else {
                         // If it's a subsequent page, append the new options
-                        setOptions((prevOptions) => [...prevOptions, ...response]);
+                        setOptions((prevOptions) => [...prevOptions, ...response.options]);
                     }
-                    if (response.length === 0) {
-                        // No more data to load
-                        hasMore.current = false;
-                    }
+                    hasMore.current = response.hasMore;
                     setLoading(false);
                 }
             } catch (error) {
