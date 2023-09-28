@@ -4,13 +4,14 @@ import React from 'react';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { Autocomplete, AutocompleteRenderInputParams, Stack, TextField } from '@mui/material';
 import FadeInDown from '@/components/FadeInDown/FadeInDown';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import Validation from '@/components/Validation/Validation';
 import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
 import Role from '@/objects/Role';
+import moment from 'moment-timezone';
 export default function page() {
     return (
         <FadeInDown>
@@ -37,7 +38,7 @@ export default function page() {
                         <ThemeButton type='submit'>Submit</ThemeButton>
                     </Stack>
                 </Validation>
-                <DatePicker />
+                <DateTimePicker value={moment(new Date())} />
             </Stack>
         </FadeInDown>
     );
