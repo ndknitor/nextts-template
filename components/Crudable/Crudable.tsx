@@ -7,8 +7,9 @@ interface CrudableFetchResponse<T> {
 interface CrudableProps<T> {
     fetchData: (page: number) => CrudableFetchResponse<T> | Promise<CrudableFetchResponse<T>>;
     insertAction?: () => void | Promise<void>;
-    updateAction?: (value: T) => void | Promise<void>;
-    deleteAction?: (value: T) => void | Promise<void>;
+    updateAction?: (value: T) => boolean | Promise<boolean>;
+    deleteAction?: (value: T) => boolean | Promise<boolean>;
+    title?: string;
     labels?: string[];
     confirmOnInsert?: boolean;
     confirmOnUpdate?: boolean;
