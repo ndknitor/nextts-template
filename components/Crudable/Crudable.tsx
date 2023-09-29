@@ -1,7 +1,9 @@
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Modal, Pagination, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TableSortLabel, Typography } from '@mui/material';
-import React, { CSSProperties, ReactNode, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Modal, Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TableSortLabel, Typography } from '@mui/material';
+import React, { CSSProperties, FC, ForwardRefExoticComponent, ReactNode, RefAttributes, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useIsFirstRender } from 'usehooks-ts';
 import { AnyObject, Maybe, ObjectSchema } from 'yup';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Edit } from '@mui/icons-material';
 
 interface CrudableFetchResponse<T> {
     data: T[];
@@ -20,11 +22,11 @@ interface MultipleSelectedAction<T> {
     node: ReactNode;
     action: (item: T[]) => boolean | Promise<boolean>;
 }
-interface CrudableProps<T extends Maybe<AnyObject>> {
+interface CrudableProps<T extends Maybe<AnyObject> & Object> {
     fetchData: (page: number, orderBy?: keyof T, desc?: boolean) => CrudableFetchResponse<T> | Promise<CrudableFetchResponse<T>>;
 
     insertAction?: () => boolean | Promise<boolean>;
-    updateAction?: (value: T) => boolean | Promise<boolean>;
+    updateAction?: (value: T) => T | undefined | Promise<T> | Promise<undefined>;
     deleteAction?: (value: T) => boolean | Promise<boolean>;
 
     fetchForProps?: Array<FetchForProps<T>>;
@@ -34,7 +36,7 @@ interface CrudableProps<T extends Maybe<AnyObject>> {
     schema?: ObjectSchema<T>;
     title?: string | ReactNode;
     header?: string[] | ReactNode[];
-    renderForProps: Array<RenderForProps<T>>;
+    renderForProps?: Array<RenderForProps<T>>;
     insertButton?: ReactNode;
     updateButton?: ReactNode;
     deleteButton?: ReactNode;
@@ -47,7 +49,7 @@ interface CrudableProps<T extends Maybe<AnyObject>> {
     copyButtonForString?: boolean;
     infiniteScroll?: boolean;
     infiniteRecycleScroll?: boolean;
-    multipleSelectedAction: MultipleSelectedAction<T>[];
+    multipleSelectedAction?: MultipleSelectedAction<T>[];
     keyRelationshipDisplayMember?: RelationshipDisplayMember<T>[];
     sortable?: boolean;
 
@@ -62,14 +64,13 @@ export interface CrudableRef<T> {
 }
 const sticky: CSSProperties = {
     position: "sticky",
-    left: 0,
-    background: "white",
-    boxShadow: "5px 2px 5px grey",
-    borderRight: "2px solid black"
+    background: "#faf8f7",
+    right: 0,
 }
-function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
+
+function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExoticComponent<CrudableProps<T> & RefAttributes<CrudableRef<T>>> {
     return forwardRef<CrudableRef<T>, CrudableProps<T>>(
-        function <T extends Maybe<AnyObject>>(props: CrudableProps<T>, ref: React.Ref<CrudableRef<T>>) {
+        function <T extends Maybe<AnyObject> & Object>(props: CrudableProps<T>, ref: React.Ref<CrudableRef<T>>) {
             const [data, setData] = useState<T[]>([]);
             const [selectedData, setSelectedData] = useState<T>();
             const [page, setPage] = useState(1);
@@ -116,7 +117,7 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
             }));
 
             const displayCell = (obj: Object): string | ReactNode => {
-                if (obj == null || obj == undefined || isNaN(obj as number) || typeof obj == "function" || obj instanceof File) {
+                if (obj === null || obj === undefined || typeof obj === "function" || obj instanceof File) {
                     return "";
                 }
                 if (typeof obj == "string") {
@@ -125,29 +126,29 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
                 if (typeof obj == "number") {
                     return obj.toString();
                 }
+                if (isNaN(obj as number)) {
+                    return "";
+                }
                 if (typeof obj == "object") {
                     return (
-                        <h1>
-                            Object
-                        </h1>
+                        <p>
+                            [Object]
+                        </p>
                     );
                 }
                 if (Array.isArray(obj)) {
                     return (
-                        <h1>
-                            Array
-                        </h1>
+                        <p>
+                            [Array]
+                        </p>
                     )
                 }
                 return "";
             }
             const columns = (): string[] => {
-                const instance: T = {} as T;
                 const cols: string[] = [];
-                const obj: Object = instance as Object;
-                type Keys = keyof T;
-                for (const key in obj) {
-                    if (obj.hasOwnProperty(key)) {
+                if (data.length > 0) {
+                    for (const key in data[0]) {
                         cols.push(key);
                     }
                 }
@@ -163,9 +164,9 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
 
             return (
                 <>
-                    <TableContainer style={props.containerStyle}>
-                        <Table>
-                            <TableHead style={props.headerStyle}>
+                    <TableContainer style={{ boxShadow: "3px 2px 3px grey", borderRadius: 12, ...props.containerStyle }}>
+                        <Table >
+                            <TableHead style={{ backgroundColor: '#faf8f7', ...props.headerStyle }}>
                                 <TableRow>
                                     {
                                         columns().map(item =>
@@ -182,7 +183,7 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
                                                         )
                                                         :
                                                         (
-                                                            <>{item}</>
+                                                            <h3>{item}</h3>
                                                         )
                                                 }
 
@@ -190,17 +191,23 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
                                         )
                                     }
                                     {
-                                        props.updateAction &&
+                                        props.deleteAction &&
                                         <TableCell style={{ ...sticky, width: 10 }}>
-                                            U
+                                            <IconButton aria-label="delete">
+                                                <DeleteIcon />
+                                            </IconButton>
                                         </TableCell>
                                     }
                                     {
-                                        props.deleteAction &&
+                                        props.updateAction &&
                                         <TableCell style={{ ...sticky, width: 10 }}>
-                                            D
+                                            <IconButton aria-label="edit">
+                                                <Edit />
+                                            </IconButton>
                                         </TableCell>
                                     }
+
+
                                 </TableRow>
                             </TableHead>
                             <TableBody style={props.bodyStyle}>
@@ -208,32 +215,41 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
                                     <TableRow>
                                         {
                                             Object.keys(row as Object).map(item =>
-                                                <TableCell align="left">
+                                                <TableCell align="left" >
                                                     {displayCell(row![item])}
                                                 </TableCell>
                                             )
                                         }
                                         {
-                                            props.updateAction &&
-                                            <TableCell style={{ ...sticky, width: 10 }}>
-                                                <IconButton name='edit' />
+                                            props.deleteAction &&
+                                            <TableCell style={{ ...sticky, width: 5 }}>
+                                                <IconButton aria-label="delete">
+                                                    <DeleteIcon color='error' />
+                                                </IconButton>
                                             </TableCell>
                                         }
                                         {
-                                            props.deleteAction &&
-                                            <TableCell style={{ ...sticky, width: 10 }}>
-                                                <IconButton name='delete' />
+                                            props.updateAction &&
+                                            <TableCell style={{ ...sticky, width: 5 }}>
+                                                <IconButton color='warning' aria-label="edit">
+                                                    <Edit />
+                                                </IconButton>
                                             </TableCell>
                                         }
+
                                     </TableRow>
                                 ))}
                                 {tableLoading && <CircularProgress />}
                             </TableBody>
-                            <TableFooter style={props.footerStyle}>
-                                <Pagination count={maxPage} page={page} showFirstButton showLastButton />
+                            <TableFooter style={{ ...props.footerStyle }}>
+                                <TableRow>
+                                    <TableCell colSpan={columns().length + 2} style={{ alignItems: "flex-end" }} >
+                                        <Pagination count={maxPage} page={page} onChange={(e, p) => fetchData(p)} showFirstButton showLastButton />
+                                    </TableCell>
+                                </TableRow>
                             </TableFooter>
                         </Table>
-                    </TableContainer>
+                    </TableContainer >
 
                     <Modal
                         keepMounted
@@ -275,4 +291,5 @@ function Crudable<T extends Maybe<AnyObject>>(props: CrudableProps<T>) {
     );
 }
 
-export default Crudable
+
+export default createCrudable
