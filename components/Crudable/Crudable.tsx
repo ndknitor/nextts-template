@@ -8,6 +8,8 @@ import { Edit } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import CrudableValidation from '../CrudableValidation/CrudableValidation';
 import CrudableInput from '../CrudableInput/CrudableInput';
+import CrudableDateInput from '../CrudableDateInput/CrudableDateInput';
+import moment from 'moment-timezone';
 
 interface CrudableFetchResponse<T> {
     data: T[];
@@ -37,7 +39,7 @@ interface CrudableProps<T extends Maybe<AnyObject> & Object> {
     fetchForProps?: Array<FetchForProps<T>>;
     showProps?: Array<keyof T>;
     inputProps?: Array<keyof T>;
-    propLabels?: { prop: keyof T, label: string, inputType?: HTMLInputTypeAttribute, readOnly?: boolean, showCopyButton?: boolean }[];
+    propLabels?: { prop: keyof T, label: string, readOnly?: boolean, showCopyButton?: boolean }[];
 
     schema?: ObjectSchema<T>;
     title?: string | ReactNode;
@@ -136,19 +138,15 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                 if (isNaN(obj as number)) {
                     return "";
                 }
-                if (typeof obj == "object") {
-                    return (
-                        <p>
-                            [Object]
-                        </p>
-                    );
-                }
                 if (Array.isArray(obj)) {
                     return (
                         <p>
                             [Array]
                         </p>
                     )
+                }
+                if (typeof obj == "object" && obj instanceof Date) {
+                    return moment(obj).format("YYYY:MM:DD hh:mm:ss")
                 }
                 return "";
             }
@@ -190,15 +188,41 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                 }
                 return labelObj.label;
             }
-            const inputTypeFromKey = (key: keyof T): HTMLInputTypeAttribute => {
-                if (!props.propLabels) {
-                    return "text";
+            const inputFromKey = (key: keyof T): ReactNode => {
+                const type = typeof props.initalValue[key];
+                console.log(type);
+
+                if (type == "number") {
+                    return (
+                        <CrudableInput
+                            disabled={readOnlyFromKey(key)}
+                            label={labelFromKeys(key) as string}
+                            type='number'
+                        />
+                    );
                 }
-                const labelObj = props.propLabels.find(l => l.prop == key);
-                if (labelObj == undefined || labelObj.inputType == undefined) {
-                    return "text";
+                if (props.initalValue[key] as Date) {
+                    return (
+                        <CrudableDateInput
+                            disabled={readOnlyFromKey(key)}
+                        />
+                    )
                 }
-                return labelObj.inputType;
+                if (props.initalValue[key] as unknown instanceof File) {
+                    return (
+                        <CrudableInput
+                            disabled={readOnlyFromKey(key)}
+                            label={labelFromKeys(key) as string}
+                            type='file'
+                        />
+                    )
+                }
+                return (
+                    <CrudableInput
+                        disabled={readOnlyFromKey(key)}
+                        label={labelFromKeys(key) as string}
+                    />
+                );
             }
             const readOnlyFromKey = (key: keyof T): boolean => {
                 if (!props.propLabels) {
@@ -264,7 +288,7 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                                     {
                                         props.insertAction &&
                                         <TableCell colSpan={2} style={{ ...sticky, textAlign: "center" }}>
-                                            <IconButton style={{ backgroundColor: "#2dad26" }} onClick={() => openModal()}  size='large'>
+                                            <IconButton style={{ backgroundColor: "#2dad26" }} onClick={() => openModal()} size='large'>
                                                 <AddIcon fontSize='medium' />
                                             </IconButton>
                                         </TableCell>
@@ -342,11 +366,7 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                             <CrudableValidation initialValues={props.initalValue} onSubmit={onInputSubmit} >
                                 {
                                     inputKeys().map(key =>
-                                        <CrudableInput
-                                            disabled={readOnlyFromKey(key)}
-                                            label={labelFromKeys(key) as string}
-                                            type={inputTypeFromKey(key)}
-                                        />
+                                        inputFromKey(key)
                                     )
                                 }
                             </CrudableValidation>
