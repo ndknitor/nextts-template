@@ -1,9 +1,13 @@
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Modal, Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TableSortLabel, Typography } from '@mui/material';
-import React, { CSSProperties, FC, ForwardRefExoticComponent, ReactNode, RefAttributes, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Pagination, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import React, { CSSProperties, ForwardRefExoticComponent, HTMLInputTypeAttribute, ReactNode, RefAttributes, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useIsFirstRender } from 'usehooks-ts';
+import ClearIcon from '@mui/icons-material/Clear';
 import { AnyObject, Maybe, ObjectSchema } from 'yup';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Edit } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import CrudableValidation from '../CrudableValidation/CrudableValidation';
+import CrudableInput from '../CrudableInput/CrudableInput';
 
 interface CrudableFetchResponse<T> {
     data: T[];
@@ -24,14 +28,16 @@ interface MultipleSelectedAction<T> {
 }
 interface CrudableProps<T extends Maybe<AnyObject> & Object> {
     fetchData: (page: number, orderBy?: keyof T, desc?: boolean) => CrudableFetchResponse<T> | Promise<CrudableFetchResponse<T>>;
+    initalValue: T;
 
-    insertAction?: () => boolean | Promise<boolean>;
+    insertAction?: (value: T) => boolean | Promise<boolean>;
     updateAction?: (value: T) => T | undefined | Promise<T> | Promise<undefined>;
     deleteAction?: (value: T) => boolean | Promise<boolean>;
 
     fetchForProps?: Array<FetchForProps<T>>;
     showProps?: Array<keyof T>;
     inputProps?: Array<keyof T>;
+    propLabels?: { prop: keyof T, label: string, inputType?: HTMLInputTypeAttribute, readOnly?: boolean, showCopyButton?: boolean }[];
 
     schema?: ObjectSchema<T>;
     title?: string | ReactNode;
@@ -41,6 +47,7 @@ interface CrudableProps<T extends Maybe<AnyObject> & Object> {
     updateButton?: ReactNode;
     deleteButton?: ReactNode;
     pagination?: (page: number, maxPage: number) => JSX.Element;
+    onPageNavigation?: (page: number) => void | Promise<void>;
 
     confirmOnInsert?: boolean;
     confirmOnUpdate?: boolean;
@@ -145,64 +152,136 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                 }
                 return "";
             }
-            const columns = (): string[] => {
-                const cols: string[] = [];
-                if (data.length > 0) {
-                    for (const key in data[0]) {
-                        cols.push(key);
-                    }
-                }
-                return cols;
-            }
             const openModal = (item?: T) => {
-                setSelectedData(item);
                 setModalShowed(true);
-            }
-            const openDialog = () => {
-                setDialogShowed(true);
-            }
+                setSelectedData(item);
 
+            }
+            const openDialog = (item?: T, action: "insert" | "update" | "delete" = "insert") => {
+                if (action == "insert" || action == "update") {
+                    setDialogShowed(true);
+                    return;
+                }
+                if (action == "delete") {
+                    setSelectedData(item);
+                    setDialogShowed(true);
+                    return;
+                }
+            }
+            const inputKeys = () => {
+                if (props.inputProps) {
+                    return props.inputProps
+                }
+                return Object.keys(props.initalValue);
+            }
+            const showKeys = () => {
+                if (props.showProps) {
+                    return props.showProps;
+                }
+                return Object.keys(props.initalValue);
+            }
+            const labelFromKeys = (key: keyof T) => {
+                if (!props.propLabels) {
+                    return key;
+                }
+                const labelObj = props.propLabels.find(l => l.prop == key);
+                if (labelObj == undefined) {
+                    return key;
+                }
+                return labelObj.label;
+            }
+            const inputTypeFromKey = (key: keyof T): HTMLInputTypeAttribute => {
+                if (!props.propLabels) {
+                    return "text";
+                }
+                const labelObj = props.propLabels.find(l => l.prop == key);
+                if (labelObj == undefined || labelObj.inputType == undefined) {
+                    return "text";
+                }
+                return labelObj.inputType;
+            }
+            const readOnlyFromKey = (key: keyof T): boolean => {
+                if (!props.propLabels) {
+                    return false;
+                }
+                const labelObj = props.propLabels.find(l => l.prop == key);
+                if (labelObj == undefined) {
+                    return false;
+                }
+                return labelObj.readOnly || false;
+            }
+            const onInputSubmit = (value: T) => {
+
+            }
             return (
                 <>
-                    <TableContainer style={{ boxShadow: "3px 2px 3px grey", borderRadius: 12, ...props.containerStyle }}>
+                    <TableContainer style={{ boxShadow: "1px 2px 4px grey", borderRadius: 12, ...props.containerStyle }}>
                         <Table >
                             <TableHead style={{ backgroundColor: '#faf8f7', ...props.headerStyle }}>
                                 <TableRow>
                                     {
-                                        columns().map(item =>
-                                            <TableCell align="left">
-                                                {
-                                                    props.sortable ?
-                                                        (
-                                                            <TableSortLabel
-                                                                active={orderBy === item}
-                                                                direction={desc ? 'desc' : 'asc'}
-                                                                onClick={() => setOrderBy(item as keyof T)}>
-                                                                {item}
-                                                            </TableSortLabel>
-                                                        )
-                                                        :
-                                                        (
-                                                            <h3>{item}</h3>
-                                                        )
-                                                }
-
-                                            </TableCell>
-                                        )
+                                        props.header ?
+                                            props.header.map(item =>
+                                                <TableCell align="left">
+                                                    {
+                                                        props.sortable ?
+                                                            (
+                                                                <TableSortLabel
+                                                                    active={orderBy === item}
+                                                                    direction={desc ? 'desc' : 'asc'}
+                                                                    onClick={() => setOrderBy(item as keyof T)}>
+                                                                    {item}
+                                                                </TableSortLabel>
+                                                            )
+                                                            :
+                                                            (
+                                                                <h3>{item}</h3>
+                                                            )
+                                                    }
+                                                </TableCell>
+                                            )
+                                            :
+                                            showKeys().map(item =>
+                                                <TableCell align="left">
+                                                    {
+                                                        props.sortable ?
+                                                            (
+                                                                <TableSortLabel
+                                                                    active={orderBy === item}
+                                                                    direction={desc ? 'desc' : 'asc'}
+                                                                    onClick={() => setOrderBy(item as keyof T)}>
+                                                                    {labelFromKeys(item).toString()}
+                                                                </TableSortLabel>
+                                                            )
+                                                            :
+                                                            (
+                                                                <h3>{labelFromKeys(item).toString()}</h3>
+                                                            )
+                                                    }
+                                                </TableCell>
+                                            )
                                     }
                                     {
-                                        props.deleteAction &&
-                                        <TableCell style={{ ...sticky, width: 10 }}>
-                                            <IconButton aria-label="delete">
-                                                <DeleteIcon />
+                                        props.insertAction &&
+                                        <TableCell colSpan={2} style={{ ...sticky, textAlign: "center" }}>
+                                            <IconButton style={{ backgroundColor: "#2dad26" }} onClick={() => openModal()}  size='large'>
+                                                <AddIcon fontSize='medium' />
                                             </IconButton>
                                         </TableCell>
                                     }
                                     {
-                                        props.updateAction &&
+                                        props.deleteAction && !props.insertAction &&
                                         <TableCell style={{ ...sticky, width: 10 }}>
-                                            <IconButton aria-label="edit">
-                                                <Edit />
+                                            <IconButton size='small' aria-label="delete">
+                                                <DeleteIcon fontSize='small' />
+                                            </IconButton>
+                                        </TableCell>
+                                    }
+                                    {
+                                        props.updateAction && !props.insertAction &&
+                                        <TableCell style={{ ...sticky, width: 10 }}>
+                                            <IconButton size='small' aria-label="edit">
+                                                <Edit fontSize='small' />
                                             </IconButton>
                                         </TableCell>
                                     }
@@ -214,7 +293,7 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                                 {data.map((row) => (
                                     <TableRow>
                                         {
-                                            Object.keys(row as Object).map(item =>
+                                            showKeys().map(item =>
                                                 <TableCell align="left" >
                                                     {displayCell(row![item])}
                                                 </TableCell>
@@ -223,16 +302,16 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                                         {
                                             props.deleteAction &&
                                             <TableCell style={{ ...sticky, width: 5 }}>
-                                                <IconButton aria-label="delete">
-                                                    <DeleteIcon color='error' />
+                                                <IconButton size='small' aria-label="delete" onClick={() => openDialog(row)}>
+                                                    <DeleteIcon fontSize='small' color='error' />
                                                 </IconButton>
                                             </TableCell>
                                         }
                                         {
                                             props.updateAction &&
                                             <TableCell style={{ ...sticky, width: 5 }}>
-                                                <IconButton color='warning' aria-label="edit">
-                                                    <Edit />
+                                                <IconButton size='small' color='warning' aria-label="edit">
+                                                    <Edit fontSize='small' onClick={() => openModal(row)} />
                                                 </IconButton>
                                             </TableCell>
                                         }
@@ -243,7 +322,7 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                             </TableBody>
                             <TableFooter style={{ ...props.footerStyle }}>
                                 <TableRow>
-                                    <TableCell colSpan={columns().length + 2} style={{ alignItems: "flex-end" }} >
+                                    <TableCell colSpan={showKeys().length + 2} style={{ alignItems: "flex-end" }} >
                                         <Pagination count={maxPage} page={page} onChange={(e, p) => fetchData(p)} showFirstButton showLastButton />
                                     </TableCell>
                                 </TableRow>
@@ -251,38 +330,55 @@ function createCrudable<T extends Maybe<AnyObject> & Object>(): ForwardRefExotic
                         </Table>
                     </TableContainer >
 
-                    <Modal
-                        keepMounted
+
+                    <Dialog
                         open={modalShowed}
                         onClose={() => setModalShowed(false)}
-                        aria-labelledby="keep-mounted-modal-title"
-                        aria-describedby="keep-mounted-modal-description"
-                    >
-                        <Box>
-                            <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-                                Text in a modal
-                            </Typography>
-                            <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
-                                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                            </Typography>
-                        </Box>
-                    </Modal>
+                        aria-labelledby="responsive-dialog-title">
+                        <DialogTitle id="responsive-dialog-title">
+                            Edit
+                        </DialogTitle>
+                        <DialogContent>
+                            <CrudableValidation initialValues={props.initalValue} onSubmit={onInputSubmit} >
+                                {
+                                    inputKeys().map(key =>
+                                        <CrudableInput
+                                            disabled={readOnlyFromKey(key)}
+                                            label={labelFromKeys(key) as string}
+                                            type={inputTypeFromKey(key)}
+                                        />
+                                    )
+                                }
+                            </CrudableValidation>
+                        </DialogContent>
+                        <DialogActions>
+                            <IconButton size='medium' onClick={() => setModalShowed(false)}>
+                                <ClearIcon fontSize='medium' />
+                            </IconButton>
+                            <IconButton size='medium' color='warning' aria-label="edit">
+                                <Edit fontSize='medium' onClick={() => setModalShowed(false)} />
+                            </IconButton>
+                        </DialogActions>
+                    </Dialog>
 
                     <Dialog
                         open={dialogShowed}
                         keepMounted
                         onClose={() => setDialogShowed(false)}
                         aria-describedby="alert-dialog-slide-description">
-                        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+                        <DialogTitle>Confirmation</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-slide-description">
-                                Let Google help apps determine location. This means sending anonymous
-                                location data to Google, even when no apps are running.
+                                Do you want to delete it ?
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={() => setDialogShowed(false)}>Disagree</Button>
-                            <Button onClick={() => setDialogShowed(false)}>Agree</Button>
+                            <IconButton size='medium' onClick={() => setDialogShowed(false)}>
+                                <ClearIcon fontSize='medium' />
+                            </IconButton>
+                            <IconButton size='medium' color='error'>
+                                <DeleteIcon fontSize='medium' onClick={() => setDialogShowed(false)} />
+                            </IconButton>
                         </DialogActions>
                     </Dialog>
                 </>
