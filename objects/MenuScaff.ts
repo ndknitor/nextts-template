@@ -2,19 +2,16 @@ import { ReactElement } from "react";
 
 export default interface MenuScaff {
     name: string,
-    icon: ReactElement,
+    icon?: ReactElement,
     path: string;
-    childrens: MenuScaff[];
-}
-interface MenuWithParent extends MenuScaff {
-    parent?: MenuScaff;
+    childrens?: MenuScaff[];
 }
 export function findMenu(menuArray: MenuScaff[], nameToFind: string): MenuScaff[] {
     const foundMenus: MenuScaff[] = [];
 
     function searchMenus(menuArray: MenuScaff[]) {
         for (const menu of menuArray) {
-            if (menu.childrens.length > 0) {
+            if (menu.childrens && menu.childrens.length > 0) {
                 searchMenus(menu.childrens);
             }
             else if (menu.name.includes(nameToFind)) {
@@ -27,21 +24,39 @@ export function findMenu(menuArray: MenuScaff[], nameToFind: string): MenuScaff[
     return foundMenus;
 }
 
-export function findMenuConnect(menuArray: MenuScaff[], partialNameToFind: string): MenuWithParent[] {
-    const foundMenus: MenuWithParent[] = [];
+export function findMenuAttach(menus: MenuScaff[], searchItemName: string): MenuScaff[] {
+    const foundMenus: MenuScaff[] = [];
+  
+    for (const menu of menus) {
+      const foundItem = findMenuItem(menu, searchItemName);
+      if (foundItem) {
+        foundMenus.push({
+          ...menu,
+          childrens: [foundItem],
+        });
+      }
+    }
+  
+    return foundMenus;
+  }
+  
 
-    function searchMenus(menuArray: MenuScaff[], parent: MenuScaff | undefined = undefined) {
-        for (const menu of menuArray) {
-            if (menu.name.includes(partialNameToFind)) {
-                foundMenus.push({ ...menu, parent });
-            }
+function findMenuItem(menu: MenuScaff, searchItemName: string): MenuScaff | undefined {
+    if (menu.name.includes(searchItemName)) {
+        return menu;
+    }
 
-            if (menu.childrens.length > 0) {
-                searchMenus(menu.childrens, menu);
+    if (menu.childrens) {
+        for (const child of menu.childrens) {
+            const foundItem = findMenuItem(child, searchItemName);
+            if (foundItem) {
+                return {
+                    ...menu,
+                    childrens: [foundItem],
+                };
             }
         }
     }
 
-    searchMenus(menuArray);
-    return foundMenus;
+    return undefined;
 }
