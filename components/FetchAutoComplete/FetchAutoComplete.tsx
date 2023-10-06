@@ -1,6 +1,6 @@
 'use client'
 import { Autocomplete, CircularProgress, Paper, TextField, } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebounce } from 'usehooks-ts';
 interface Option<T> {
     label: string;
@@ -27,39 +27,29 @@ function FetchAutoComplete<T>(props: FetchAutoCompleteProps<T>) {
 
     const inputDebounce = useDebounce(inputValue, props.debounce);
 
-    useEffect(() => {
-        let active = true;
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await props.fetch(inputValue, page);
-                if (active) {
-                    if (page === 1) {
-                        // If it's the first page, replace the existing options
-                        setOptions(response.options);
-                    } else {
-                        // If it's a subsequent page, append the new options
-                        setOptions((prevOptions) => [...prevOptions, ...response.options]);
-                    }
-                    hasMore.current = response.hasMore;
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await props.fetch(inputDebounce, page);
+            if (page === 1) {
+                // If it's the first page, replace the existing options
+                setOptions(response.options);
+            } else {
+                // If it's a subsequent page, append the new options
+                setOptions((prevOptions) => [...prevOptions, ...response.options]);
             }
-        };
-
-        if (inputValue !== undefined) {
-            fetchData();
-        } else {
-            setOptions([]);
+            hasMore.current = response.hasMore;
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
         }
+    }, [inputDebounce, page, props]);
 
-        return () => {
-            active = false;
-        };
-    }, [inputDebounce, props.fetch, page]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
 
 

@@ -11,7 +11,6 @@ import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
 import appxios from '@/components/AxiosInterceptor';
 import moment from 'moment-timezone';
-import createCrudable from '@/components/Crudable/Crudable';
 type Person = {
     id: number;
     lastName: string;
@@ -19,7 +18,6 @@ type Person = {
     age: number;
     birth: Date;
 };
-const Crudable = createCrudable<Person>();
 
 export default function page() {
     const rows: Person[] = [
@@ -33,37 +31,6 @@ export default function page() {
     return (
         <FadeInDown>
             <Stack padding={5}>
-                {
-                    window &&
-                    <Crudable
-                        initalValue={rows[0]}
-                        sortable
-                        propLabels={[
-                            { prop: "firstName", label: "First name", },
-                            { prop: "lastName", label: "Last name" },
-                            { prop: "age", label: "Age" },
-                            { prop: "birth", label: "Birth" }
-                        ]}
-                        //header={["First name", "Last name", "Age"]}
-                        showProps={["firstName", "lastName", "age", "birth"]}
-                        inputProps={["firstName", "lastName", "age", "birth"]}
-                        fetchData={(page) => {
-                            return {
-                                maxPage: 10,
-                                data: rows
-                            }
-                        }}
-                        insertAction={(item) => {
-                            return false;
-                        }}
-                        updateAction={(item) => {
-                            return undefined;
-                        }}
-                        deleteAction={() => {
-                            return false;
-                        }}
-                    />
-                }
                 {/* <Link href="/public/about">About</Link>
                 <ThemeButton onClick={async () => {
                     // await appxios.get("", {
