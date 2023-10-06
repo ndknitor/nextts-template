@@ -1,11 +1,10 @@
-'use client'
-import ThemeTextInput from '@/components/ThemeTextInput/ThemeTextInput';
+import ThemeTextInput from '@/components/client/ThemeTextInput/ThemeTextInput';
 import React, { CSSProperties } from 'react';
-import ThemeButton from '@/components/ThemeButton/ThemeButton';
+import ThemeButton from '@/components/client/ThemeButton/ThemeButton';
 import { Autocomplete, AutocompleteRenderInputParams, Stack, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
-import FadeInDown from '@/components/FadeInDown/FadeInDown';
+import FadeInDown from '@/components/client/FadeInDown/FadeInDown';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
-import Validation from '@/components/Validation/Validation';
+import Validation from '@/components/client/Validation/Validation';
 import { toast } from 'react-toastify';
 import SignInRequest from '@/objects/requests/SignInRequest';
 import Link from 'next/link';
@@ -29,10 +28,10 @@ export default function page() {
     ];
 
     return (
-        <FadeInDown>
+        <>
             <Stack padding={5}>
-                {/* <Link href="/public/about">About</Link>
-                <ThemeButton onClick={async () => {
+                <Link href="/public/about">About</Link>
+                {/* <ThemeButton onClick={async () => {
                     // await appxios.get("", {
                     //     loadAction: {
                     //         loadingLock: true
@@ -54,7 +53,7 @@ export default function page() {
                 </Validation>
                 <DatePicker value={moment(new Date())} /> */}
             </Stack>
-        </FadeInDown>
+        </>
     );
 }
 

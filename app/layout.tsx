@@ -1,11 +1,14 @@
 import AuthorizeContextProvider from '@/context/AuthorizeContextProvider'
 import './globals.css'
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import { ToastContainer } from 'react-toastify'
 import { GlobalContextProvider } from '@/context/GlobalContextProvider'
 import { AxiosInterceptor } from '@/components/AxiosInterceptor'
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "NDKN's Template",
@@ -19,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body >
+      <body className={inter.className}>
         <AuthorizeContextProvider>
           <GlobalContextProvider>
             <AxiosInterceptor>

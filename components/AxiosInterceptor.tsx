@@ -2,7 +2,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import React from 'react';
-import PageLoader from './PageLoader/PageLoader';
+import PageLoader from './client/PageLoader/PageLoader';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '@/context/GlobalContextProvider';
 
