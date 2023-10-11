@@ -7,6 +7,9 @@ export default interface MenuScaff {
     childrens?: MenuScaff[];
 }
 export function findMenu(menuArray: MenuScaff[], nameToFind: string): MenuScaff[] {
+    if (nameToFind == "") {
+        return menuArray;
+    }
     const foundMenus: MenuScaff[] = [];
 
     function searchMenus(menuArray: MenuScaff[]) {
@@ -25,6 +28,9 @@ export function findMenu(menuArray: MenuScaff[], nameToFind: string): MenuScaff[
 }
 
 export function findMenuAttach(menus: MenuScaff[], searchItemName: string): MenuScaff[] {
+    if (searchItemName == "") {
+        return menus;
+    }
     const foundMenus: MenuScaff[] = [];
   
     for (const menu of menus) {
