@@ -1,3 +1,4 @@
+'use client'
 import ThemeTextInput from '@/components/client/ThemeTextInput/ThemeTextInput';
 import React, { CSSProperties } from 'react';
 import ThemeButton from '@/components/client/ThemeButton/ThemeButton';
@@ -17,21 +18,12 @@ type Person = {
     age: number;
     birth: Date;
 };
-
 export default function page() {
-    const rows: Person[] = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, birth: new Date('1990-01-01') },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42, birth: new Date('1983-03-15') },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45, birth: new Date('1980-11-30') },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16, birth: new Date('2007-06-11') },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: 45, birth: new Date('1980-07-25') }
-    ];
-
     return (
         <>
             <Stack padding={5}>
                 <Link href="/public/about">About</Link>
-                {/* <ThemeButton onClick={async () => {
+                <ThemeButton onClick={async () => {
                     // await appxios.get("", {
                     //     loadAction: {
                     //         loadingLock: true
@@ -51,7 +43,7 @@ export default function page() {
                         <ThemeButton type='submit'>Submit</ThemeButton>
                     </Stack>
                 </Validation>
-                <DatePicker value={moment(new Date())} /> */}
+                <DatePicker value={moment(new Date())} />
             </Stack>
         </>
     );
