@@ -1,6 +1,7 @@
-import { RangeResponse } from "./RangeResponse";
+import RangeResponse from "./RangeResponse";
 
-export interface PagingResponse<T> extends RangeResponse<T> {
+type PagingResponse<T> = RangeResponse<T> & {
     maxPage: number;
     total: number;
 }
+export default PagingResponse;

@@ -1,5 +1,6 @@
 import StandardReponse from "./StandardReponse";
 
-export interface RangeResponse<T> extends StandardReponse {
+type RangeResponse<T> = StandardReponse & {
     data: T[];
 }
+export default RangeResponse;

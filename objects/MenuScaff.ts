@@ -1,11 +1,12 @@
 import { ReactElement } from "react";
 
-export default interface MenuScaff {
+type MenuScaff = {
     name: string,
     icon?: ReactElement,
     path: string;
     childrens?: MenuScaff[];
 }
+export default MenuScaff;
 export function findMenu(menuArray: MenuScaff[], nameToFind: string): MenuScaff[] {
     if (nameToFind == "") {
         return menuArray;

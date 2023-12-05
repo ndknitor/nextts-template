@@ -1,5 +1,6 @@
 import StandardReponse from "./StandardReponse";
 
-export default interface SingleResponse<T> extends StandardReponse {
+type SingleResponse<T> = StandardReponse & {
     data: T;
 }
+export default SingleResponse;
