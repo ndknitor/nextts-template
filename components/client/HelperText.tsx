@@ -4,10 +4,8 @@ interface HelperTextProps {
     text?: string;
 }
 const HelperText = ({ show, text }: HelperTextProps) => {
-    const helperTextClasses = `transition-opacity duration-600 ease-in-out opacity-${show ? '100' : '0'}`;
-
     return (
-        <p className={helperTextClasses}>
+        <p className={`transition-opacity text-red-600 ease-in duration-500 opacity-${show ? '100' : '0'}`}>
             {text}
         </p>
     );

@@ -10,8 +10,9 @@ function ValidationInput(props: InputHTMLAttributes<HTMLInputElement>) {
                     <input
                         {...field}
                         placeholder={props.placeholder}
-                        {...props} // Include standard HTML input props
+                        {...props}
                     />
+
                     <HelperText show={meta.touched && Boolean(meta.error)} text={meta.touched ? meta.error : ""} />
                 </>
             )}
