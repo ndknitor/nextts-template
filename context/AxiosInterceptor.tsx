@@ -2,9 +2,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import React from 'react';
-import PageLoader from './client/PageLoader/PageLoader';
 import { toast } from 'react-toastify';
-import { useGlobalContext } from '@/context/GlobalContextProvider';
+import { useGlobalContext } from './GlobalContextProvider';
 
 const appxios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -34,17 +33,8 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
     const [lockLoading, setLockLoading] = useState(false);
     const { languages } = useGlobalContext();
     useEffect(() => {
-        const beforeRequest = (config: AxiosRequestConfig) => {
+        const beforeRequest = (config: InternalAxiosRequestConfig<any>) => {
             setLoading(true);
-            const { loadAction } = config;
-            if (loadAction) {
-                if (loadAction.loadingLock) {
-                    setLockLoading(true);
-                }
-                if (loadAction.setLoading) {
-                    loadAction.setLoading(true);
-                }
-            }
             return config;
         }
         const requestError = (error: any) => {
@@ -55,28 +45,10 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             setLoading(false);
             console.log(`Path: ${response.config.url}; Method:${response.config.method}; Status: ${response.status};
             Body:${response.config.data}`);
-            const { loadAction } = response.config;
-            if (loadAction) {
-                if (loadAction.loadingLock) {
-                    setLockLoading(false);
-                }
-                if (loadAction.setLoading) {
-                    loadAction.setLoading(false);
-                }
-            }
             return response;
         }
         const onResponseError = (error: AxiosError) => {
             setLoading(false);
-            const { loadAction } = error.config;
-            if (loadAction) {
-                if (loadAction.loadingLock) {
-                    setLockLoading(false);
-                }
-                if (loadAction.setLoading) {
-                    loadAction.setLoading(false);
-                }
-            }
             let message = "";
             if (error.code == "ERR_NETWORK") {
                 message = languages.axios.serverError;
@@ -96,7 +68,6 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
     }, [languages])
     return (
         <AxiosLoadingContext.Provider value={{ loading }}>
-            <PageLoader loading={lockLoading} />
             {children}
         </AxiosLoadingContext.Provider>
     )

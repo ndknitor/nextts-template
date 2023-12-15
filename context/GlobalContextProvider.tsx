@@ -1,9 +1,9 @@
 'use client'
-import React from "react";
+import Languages from "@/languages";
+import React, { useEffect } from "react";
 import { createContext, useContext, Dispatch, SetStateAction, useState, PropsWithChildren } from "react";
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import Languages from "@/utils/language";
+import { AxiosInterceptor } from "./AxiosInterceptor";
+
 interface ContextProps {
     languages: typeof Languages.en;
     iso: keyof Languages;
@@ -18,11 +18,15 @@ const GlobalContext = createContext<ContextProps>({
 
 export const GlobalContextProvider = ({ children }: PropsWithChildren) => {
     const [iso, setISO] = useState<keyof Languages>("en");
+
+    useEffect(() => {
+
+    }, []);
     return (
         <GlobalContext.Provider value={{ iso, setISO, languages: Languages[iso] }}>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
+            <AxiosInterceptor>
                 {children}
-            </LocalizationProvider>
+            </AxiosInterceptor>
         </GlobalContext.Provider>
     )
 };
