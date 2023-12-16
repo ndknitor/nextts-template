@@ -3,9 +3,9 @@ interface HelperTextProps {
     show: boolean;
     text?: string;
 }
-const HelperText = ({ show, text }: HelperTextProps) => {
+function HelperText({ show, text }: HelperTextProps) {
     return (
-        <p className={`transition-opacity text-red-600 ease-in duration-500 opacity-${show ? '100' : '0'}`}>
+        <p className={`transition-opacity text-red-600 ease-in duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}>
             {text}
         </p>
     );

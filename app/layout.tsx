@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <GlobalContextProvider>
         <body className={inter.className}>{children}</body>
-        <ClientToastContainer/>
+        <ClientToastContainer />
       </GlobalContextProvider>
     </html>
   )
