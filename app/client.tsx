@@ -13,8 +13,8 @@ export function ValidationTesting() {
             .default(""),
         password: Yup
             .string()
-            .min(6, 'Password must be at least 6 characters')
             .required('Password is required')
+            .min(6, 'Password must be at least 6 characters')
             .default("")
     });
     return (
