@@ -1,15 +1,19 @@
-FROM node:18-alpine
+FROM node:18-alpine as build
 WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build
-RUN mkdir "/.npm"
-RUN chown -R 65534:65534 "/.npm"
+FROM node:18-alpine as final
+WORKDIR /app
+
+COPY --from=build /app/.next/standalone .
+COPY --from=build /app/.next/static ./.next/static
+
 USER nobody
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
 
-#build the image
-#docker build -t nextts-template .
+# build the image
+# docker build -t nextts-template .
 
-#run the image
-#docker run --rm -d -p 3000:3000 nextts-template
+# run the image
+# docker run --rm -d -p 3000:3000 nextts-template
