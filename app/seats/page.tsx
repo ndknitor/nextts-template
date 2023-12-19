@@ -22,7 +22,7 @@ async function page(props: NextPageProps<{}, PagingRequest<Seat>>) {
       <Pagination
         navigateUrl={(p) => `/seats?page=${p}&size=${props.searchParams.size || process.env.NEXT_PUBLIC_MAXPAGE}`}
         maxPage={seats.maxPage}
-        page={props.searchParams.page}
+        page={props.searchParams.page || 1}
       />
 
 
