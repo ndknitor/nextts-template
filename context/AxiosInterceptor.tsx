@@ -3,7 +3,6 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequ
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import React from 'react';
 import { toast } from 'react-toastify';
-import { useGlobalContext } from './GlobalContextProvider';
 
 const appxios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -30,7 +29,6 @@ export function useAxiosLoading() {
 
 export function AxiosInterceptor({ children }: PropsWithChildren) {
     const [loading, setLoading] = useState(false);
-    const [lockLoading, setLockLoading] = useState(false);
     useEffect(() => {
         const beforeRequest = (config: InternalAxiosRequestConfig<any>) => {
             setLoading(true);

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from "react";
-import { createContext, useContext, Dispatch, SetStateAction, useState, PropsWithChildren } from "react";
+import { createContext, useContext, PropsWithChildren } from "react";
 import { AxiosInterceptor } from "./AxiosInterceptor";
 
 interface ContextProps {
