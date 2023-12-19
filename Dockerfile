@@ -9,6 +9,8 @@ WORKDIR /app
 COPY --from=build /app/.next/standalone .
 COPY --from=build /app/.next/static ./.next/static
 
+RUN apk update
+
 USER nobody
 CMD ["node", "server.js"]
 
