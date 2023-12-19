@@ -1,10 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { GlobalContextProvider } from '@/context/GlobalContextProvider';
-import ClientToastContainer from '@/components/client/ClientToastContainer';
-
-const inter = Inter({ subsets: ['latin'] })
+import { GlobalContextProvider } from '@/context/GlobalContextProvider'
+import ClientToastContainer from '@/components/client/ClientToastContainer'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,9 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <GlobalContextProvider>
-        <body className={inter.className}>{children}</body>
-        <ClientToastContainer />
+        <body>{children}</body>
       </GlobalContextProvider>
+      <ClientToastContainer />
     </html>
   )
 }

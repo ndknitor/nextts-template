@@ -31,7 +31,6 @@ export function useAxiosLoading() {
 export function AxiosInterceptor({ children }: PropsWithChildren) {
     const [loading, setLoading] = useState(false);
     const [lockLoading, setLockLoading] = useState(false);
-    const { languages } = useGlobalContext();
     useEffect(() => {
         const beforeRequest = (config: InternalAxiosRequestConfig<any>) => {
             setLoading(true);
@@ -51,10 +50,10 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
             setLoading(false);
             let message = "";
             if (error.code == "ERR_NETWORK") {
-                message = languages.axios.serverError;
+                message = "";
             }
             else if (error.code == "ECONNABORTED") {
-                message = languages.axios.internetError;
+                message = "";
             }
             console.log(message);
             toast.error(message, {
@@ -65,7 +64,7 @@ export function AxiosInterceptor({ children }: PropsWithChildren) {
         appxios.interceptors.request.use(beforeRequest, requestError);
         const interceptor = appxios.interceptors.response.use(onResponse, onResponseError);
         return () => appxios.interceptors.response.eject(interceptor);
-    }, [languages])
+    }, []);
     return (
         <AxiosLoadingContext.Provider value={{ loading }}>
             {children}
