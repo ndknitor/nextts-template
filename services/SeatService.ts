@@ -4,12 +4,13 @@ import PagingResponse from "@/objects/responses/PagingResponse";
 import RangeResponse from "@/objects/responses/RangeResponse";
 import { apiFetch } from "@/utils/function";
 import queryString from "query-string";
+import { sleep } from 'ndknitor-ts/system';
 
 export interface ISeatService {
     getPaging: (request: PagingRequest<Seat>) => Promise<PagingResponse<Seat>>;
     getByIds: (seatIds: number[]) => Promise<RangeResponse<Seat>>;
 }
-export const seatService : ISeatService =
+export const seatService: ISeatService =
 {
     getPaging,
     getByIds
@@ -17,11 +18,12 @@ export const seatService : ISeatService =
 
 const context = "seats";
 const tags = [context];
-const revalidate = 3600;
+const revalidate = 1;
 
 async function getPaging(request: PagingRequest<Seat>) {
     request.orderBy = Boolean(request.orderBy) ? request.orderBy : ["seatId"];
     const response = await apiFetch(`${context}?${queryString.stringify(request)}`, { next: { revalidate: revalidate, tags: tags, } });
+    await sleep(1000);
     return await (response.json() as Promise<PagingResponse<Seat>>);
 }
 async function getByIds(seatIds: number[]) {

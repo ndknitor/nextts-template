@@ -1,9 +1,9 @@
-import Pagination from '@/components/shared/Pagination';
 import { Seat } from '@/objects/entities/Seat';
 import PagingRequest from '@/objects/requests/PagingRequest';
-import { seatService } from '@/services/SeatService';
 import NextPageProps from '@/utils/NextPageProps';
 import React from 'react'
+import { seatService } from '@/services/SeatService';
+import Pagination from '@/components/shared/Pagination';
 
 async function page(props: NextPageProps<{}, PagingRequest<Seat>>) {
   const seats = await seatService.getPaging(props.searchParams);
@@ -24,8 +24,6 @@ async function page(props: NextPageProps<{}, PagingRequest<Seat>>) {
         maxPage={seats.maxPage}
         page={props.searchParams.page || 1}
       />
-
-
     </main>
   )
 }
