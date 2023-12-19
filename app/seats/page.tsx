@@ -1,4 +1,4 @@
-import Pagination from '@/components/shared/Pagination/Pagination';
+import Pagination from '@/components/shared/Pagination';
 import { Seat } from '@/objects/entities/Seat';
 import PagingRequest from '@/objects/requests/PagingRequest';
 import { seatService } from '@/services/SeatService';
