@@ -1,5 +1,5 @@
-import { range } from '@/utils/function';
 import Link from 'next/link';
+import { range } from 'ndknitor-ts/system';
 import React from 'react'
 interface PaginationProps {
     page: number;
@@ -39,7 +39,7 @@ function Pagination(props: PaginationProps) {
             {
                 props.page > 1 &&
                 <Link
-                    className='bg-slate-400 hover:bg-slate-800 hover:text-white duration-300 rounded-lg w-9 h-9'
+                    className='bg-slate-400 hover:bg-slate-800 hover:text-white duration-300 rounded-lg w-9 h-9 p-1 text-center'
                     href={props.navigateUrl(parseInt(props.page.toString()) - 1)}>
                     &#8592;
                 </Link>
@@ -57,7 +57,7 @@ function Pagination(props: PaginationProps) {
             {
                 props.page < props.maxPage &&
                 <Link
-                    className='bg-slate-400 hover:bg-slate-800 hover:text-white duration-300 rounded-lg items-center justify-center w-9 h-9'
+                    className='bg-slate-400 hover:bg-slate-800 hover:text-white duration-300 rounded-lg items-center justify-center w-9 h-9 p-1 text-center'
                     href={props.navigateUrl(parseInt(props.page.toString()) + 1)}>
                     &#8594;
                 </Link>

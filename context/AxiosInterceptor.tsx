@@ -1,6 +1,6 @@
 'use client';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
+import axios, { AxiosError,  AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import {  PropsWithChildren,  createContext, useContext, useEffect, useState } from 'react'
 import React from 'react';
 import { toast } from 'react-toastify';
 
@@ -9,10 +9,7 @@ const appxios = axios.create({
     timeout: process.env.NEXT_PUBLIC_REQUEST_TIMEOUT | 3000,
     validateStatus: () => true
 });
-export interface InterceptorParams {
-    loadingLock?: boolean;
-    setLoading?: Dispatch<SetStateAction<boolean>>;
-}
+
 export function setAuthorizationBearer(jwt?: string) {
     if (jwt) {
         appxios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
