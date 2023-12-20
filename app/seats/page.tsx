@@ -12,7 +12,7 @@ async function page(props: NextPageProps<{}, PagingRequest<RSeat>>) {
   return (
     <main>
       {
-        seats.data.data.map(item =>
+        seats.ok && seats.data.data.map(item =>
           <div key={`Seat${item.seatId}`}>
             <h1>Seat Id: {item.seatId}</h1>
             <h1>Name: {item.name}</h1>

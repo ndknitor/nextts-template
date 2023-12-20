@@ -2,23 +2,14 @@ import { CSeat, RSeat, USeat } from "@/objects/entities/Seat";
 import PagingRequest from "@/objects/requests/PagingRequest";
 import PagingResponse from "@/objects/responses/PagingResponse";
 import RangeResponse from "@/objects/responses/RangeResponse";
-import { FetchResponse, apiDelete, apiGet, apiPost } from "@/utils/FetchApi";
+import { FetchResponse, apiDelete, apiGet, apiPost, apiPut } from "@/utils/FetchApi";
 import queryString from "query-string";
 
-export interface ISeatService {
-    getPaging: (request: PagingRequest<RSeat>) => Promise<FetchResponse<PagingResponse<RSeat>>>;
-    getByIds: (seatIds: number[]) => Promise<FetchResponse<RangeResponse<RSeat>>>;
-    insert: (seats: CSeat[]) => Promise<FetchResponse<RangeResponse<RSeat>>>;
-    update: (seats: USeat[]) => Promise<FetchResponse<RangeResponse<RSeat>>>;
-    remove: (seatIds: number[]) => Promise<FetchResponse<RangeResponse<RSeat>>>;
-}
-export const seatService: ISeatService =
+export const seatService =
 {
     getPaging,
     getByIds,
-    insert,
-    update,
-    remove
+    insert
 };
 
 const context = "seats";
@@ -36,7 +27,7 @@ async function insert(seats: CSeat[]) {
     return await apiPost<RangeResponse<RSeat>>(`${context}`, seats);
 }
 async function update(seats: USeat[]) {
-    return await apiPost<RangeResponse<RSeat>>(`${context}`, seats);
+    return await apiPut<RangeResponse<RSeat>>(`${context}`, seats);
 }
 async function remove(seatIds: number[]) {
     return await apiDelete<RangeResponse<RSeat>>(`${context}?${queryString.stringify({ seatId: seatIds })}`);
