@@ -4,14 +4,14 @@ function onConnectionTimeOut() {
     isClient() && toast.error("Internet connection error, please try again later");
 }
 
-
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const isClient = () => typeof window !== 'undefined';
 export interface FetchResponse<T> extends Response {
     data: T;
 }
 export async function apiGet<T>(url: string, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init
         });
@@ -28,7 +28,7 @@ export async function apiGet<T>(url: string, init?: RequestInit) {
 }
 export async function apiPost<T>(url: string, data: unknown, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'POST',
@@ -49,7 +49,7 @@ export async function apiPost<T>(url: string, data: unknown, init?: RequestInit)
 }
 export async function apiPostForm<T>(url: string, formData: FormData, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'POST',
@@ -65,7 +65,7 @@ export async function apiPostForm<T>(url: string, formData: FormData, init?: Req
 }
 export async function apiPut<T>(url: string, data: unknown, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PUT',
@@ -86,7 +86,7 @@ export async function apiPut<T>(url: string, data: unknown, init?: RequestInit) 
 }
 export async function apiPutForm<T>(url: string, formData: FormData, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PUT',
@@ -104,7 +104,7 @@ export async function apiPutForm<T>(url: string, formData: FormData, init?: Requ
 }
 export async function apiPatch<T>(url: string, data: unknown, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PATCH',
@@ -126,7 +126,7 @@ export async function apiPatch<T>(url: string, data: unknown, init?: RequestInit
 }
 export async function apiPatchForm<T>(url: string, formData: FormData, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PATCH',
@@ -142,7 +142,7 @@ export async function apiPatchForm<T>(url: string, formData: FormData, init?: Re
 }
 export async function apiDelete<T>(url: string, init?: RequestInit) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+        const response = await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'DELETE',
