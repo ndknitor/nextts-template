@@ -1,5 +1,5 @@
 import { CSeat, RSeat, USeat } from "@/objects/entities/Seat";
-import PagingRequest from "@/objects/requests/PagingRequest";
+import OffsetPagingRequest from "@/objects/requests/OffsetPagingRequest";
 import PagingResponse from "@/objects/responses/PagingResponse";
 import RangeResponse from "@/objects/responses/RangeResponse";
 import { FetchResponse, apiDelete, apiGet, apiPost, apiPut } from "@/utils/FetchApi";
@@ -16,7 +16,7 @@ const context = "seats";
 const tags = [context];
 const revalidate = 1;
 
-async function getPaging(request: PagingRequest<RSeat>) {
+async function getPaging(request: OffsetPagingRequest<RSeat>) {
     request.orderBy = Boolean(request.orderBy) ? request.orderBy : ["seatId"];
     return await apiGet<PagingResponse<RSeat>>(`${context}?${queryString.stringify(request)}`);
 }
