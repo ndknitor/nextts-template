@@ -9,6 +9,7 @@ export default async function Home() {
       {
         <h1>{response.ok && new Date(response.data.date).toLocaleString()}</h1>
       }
+      <h1>{process.env.NEXT_PUBLIC_API_BASE_URL}</h1>
       <Link href={"/seats?page=1&size=2"}>seats</Link>
       <ValidationTesting />
     </main>

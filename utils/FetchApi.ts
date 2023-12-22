@@ -11,15 +11,14 @@ export interface FetchResponse<T> extends Response {
 }
 export async function apiGet<T>(url: string, init?: RequestInit) {
     try {
-        const response  = (await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init
-        })) as FetchResponse<T>;        
+        })) as FetchResponse<T>;
         response.data = await (response.json() as Promise<T>);
         return response;
     }
-    catch(e : any)
-    {
+    catch (e: any) {
         onConnectionTimeOut();
         return responseFactory<T>();
     }
@@ -125,7 +124,7 @@ export async function apiPatchForm<T>(url: string, formData: FormData, init?: Re
             ...init,
             method: 'PATCH',
             body: formData,
-        }))as FetchResponse<T>;
+        })) as FetchResponse<T>;
         response.data = await (response.json() as Promise<T>);
         return response;
     } catch {
@@ -149,8 +148,6 @@ export async function apiDelete<T>(url: string, init?: RequestInit) {
         return responseFactory<T>();
     }
 }
-
-
 
 function responseFactory<T>(): FetchResponse<T> {
     return {
@@ -241,4 +238,4 @@ export enum HttpStatusCode {
     LoopDetected = 508,
     NotExtended = 510,
     NetworkAuthenticationRequired = 511,
-  }
+}
