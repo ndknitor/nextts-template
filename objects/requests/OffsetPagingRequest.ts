@@ -1,11 +1,11 @@
-export default class PagingRequest<T> {
+export default class OffsetPagingRequest<T> {
     orderBy: Array<keyof T> = [];
     desc: boolean[] = [];
     page: number = 1;
     size: number = 0;
 
-    constructor(self: PagingRequest<T>) {
-        if (self.page && Boolean(parseInt(self.page.toString()))) {
+    constructor(self: OffsetPagingRequest<T>) {
+        if (self.page && Boolean(parseInt(self.page.toString())) && self.page > 0) {
             this.page = self.page;
         }
         else {

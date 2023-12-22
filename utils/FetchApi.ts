@@ -11,14 +11,12 @@ export interface FetchResponse<T> extends Response {
 }
 export async function apiGet<T>(url: string, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response  = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init
-        });
-        console.log(response);
-        
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;        
+        response.data = await (response.json() as Promise<T>);
+        return response;
     }
     catch(e : any)
     {
@@ -28,7 +26,7 @@ export async function apiGet<T>(url: string, init?: RequestInit) {
 }
 export async function apiPost<T>(url: string, data: unknown, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'POST',
@@ -37,9 +35,9 @@ export async function apiPost<T>(url: string, data: unknown, init?: RequestInit)
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        });
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     }
     catch (e) {
         onConnectionTimeOut();
@@ -49,15 +47,14 @@ export async function apiPost<T>(url: string, data: unknown, init?: RequestInit)
 }
 export async function apiPostForm<T>(url: string, formData: FormData, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'POST',
             body: formData,
-        });
-
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     } catch {
         onConnectionTimeOut();
         return responseFactory<T>();
@@ -65,7 +62,7 @@ export async function apiPostForm<T>(url: string, formData: FormData, init?: Req
 }
 export async function apiPut<T>(url: string, data: unknown, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PUT',
@@ -74,10 +71,9 @@ export async function apiPut<T>(url: string, data: unknown, init?: RequestInit) 
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        });
-
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     }
     catch {
         onConnectionTimeOut();
@@ -86,15 +82,14 @@ export async function apiPut<T>(url: string, data: unknown, init?: RequestInit) 
 }
 export async function apiPutForm<T>(url: string, formData: FormData, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PUT',
             body: formData,
-        });
-
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     }
     catch
     {
@@ -104,7 +99,7 @@ export async function apiPutForm<T>(url: string, formData: FormData, init?: Requ
 }
 export async function apiPatch<T>(url: string, data: unknown, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PATCH',
@@ -113,10 +108,9 @@ export async function apiPatch<T>(url: string, data: unknown, init?: RequestInit
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        });
-
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     }
     catch
     {
@@ -126,15 +120,14 @@ export async function apiPatch<T>(url: string, data: unknown, init?: RequestInit
 }
 export async function apiPatchForm<T>(url: string, formData: FormData, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'PATCH',
             body: formData,
-        });
-
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        }))as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     } catch {
         onConnectionTimeOut();
         return responseFactory<T>();
@@ -142,14 +135,13 @@ export async function apiPatchForm<T>(url: string, formData: FormData, init?: Re
 }
 export async function apiDelete<T>(url: string, init?: RequestInit) {
     try {
-        const response = await fetch(`${BASE_URL}${url}`, {
+        const response = (await fetch(`${BASE_URL}${url}`, {
             signal: AbortSignal.timeout(parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT.toString())),
             ...init,
             method: 'DELETE',
-        });
-
-        const result: FetchResponse<T> = { ...response, data: await (response.json() as Promise<T>) };
-        return result;
+        })) as FetchResponse<T>;
+        response.data = await (response.json() as Promise<T>);
+        return response;
     }
     catch
     {
@@ -163,7 +155,7 @@ export async function apiDelete<T>(url: string, init?: RequestInit) {
 function responseFactory<T>(): FetchResponse<T> {
     return {
         ok: false,
-        status: 0,
+        status: HttpStatusCode.RequestTimeout,
         headers: {} as Headers,
         redirected: false,
         statusText: "",
@@ -192,3 +184,61 @@ function responseFactory<T>(): FetchResponse<T> {
         data: {} as T
     }
 }
+
+export enum HttpStatusCode {
+    Continue = 100,
+    SwitchingProtocols = 101,
+    OK = 200,
+    Created = 201,
+    Accepted = 202,
+    NonAuthoritativeInformation = 203,
+    NoContent = 204,
+    ResetContent = 205,
+    PartialContent = 206,
+    MultipleChoices = 300,
+    MovedPermanently = 301,
+    Found = 302,
+    SeeOther = 303,
+    NotModified = 304,
+    UseProxy = 305,
+    TemporaryRedirect = 307,
+    PermanentRedirect = 308,
+    BadRequest = 400,
+    Unauthorized = 401,
+    PaymentRequired = 402,
+    Forbidden = 403,
+    NotFound = 404,
+    MethodNotAllowed = 405,
+    NotAcceptable = 406,
+    ProxyAuthenticationRequired = 407,
+    RequestTimeout = 408,
+    Conflict = 409,
+    Gone = 410,
+    LengthRequired = 411,
+    PreconditionFailed = 412,
+    PayloadTooLarge = 413,
+    URITooLong = 414,
+    UnsupportedMediaType = 415,
+    RangeNotSatisfiable = 416,
+    ExpectationFailed = 417,
+    MisdirectedRequest = 421,
+    UnprocessableEntity = 422,
+    Locked = 423,
+    FailedDependency = 424,
+    UpgradeRequired = 426,
+    PreconditionRequired = 428,
+    TooManyRequests = 429,
+    RequestHeaderFieldsTooLarge = 431,
+    UnavailableForLegalReasons = 451,
+    InternalServerError = 500,
+    NotImplemented = 501,
+    BadGateway = 502,
+    ServiceUnavailable = 503,
+    GatewayTimeout = 504,
+    HTTPVersionNotSupported = 505,
+    VariantAlsoNegotiates = 506,
+    InsufficientStorage = 507,
+    LoopDetected = 508,
+    NotExtended = 510,
+    NetworkAuthenticationRequired = 511,
+  }

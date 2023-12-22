@@ -1,8 +1,7 @@
 'use client'
-import React, { useEffect } from "react";
+import React from "react";
 import { createContext, useContext, PropsWithChildren } from "react";
-import { AxiosInterceptor } from "./AxiosInterceptor";
-
+import { useInitEffect } from 'ndknitor-ts/hooks'
 interface ContextProps {
 
 }
@@ -13,14 +12,12 @@ const GlobalContext = createContext<ContextProps>({
 
 export const GlobalContextProvider = ({ children }: PropsWithChildren) => {
 
-    useEffect(() => {
+    useInitEffect(() => {
 
-    }, []);
+    });
     return (
-        <GlobalContext.Provider value={{ }}>
-            <AxiosInterceptor>
-                {children}
-            </AxiosInterceptor>
+        <GlobalContext.Provider value={{}}>
+            {children}
         </GlobalContext.Provider>
     )
 };
