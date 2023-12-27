@@ -1,6 +1,7 @@
 'use client'
 import Validation from '@/components/client/Validation';
 import ValidationInput from '@/components/client/ValidationInput';
+import useGlobalCount from '@/context/hooks/useGlobalCount';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -17,6 +18,7 @@ export function ValidationTesting() {
             .min(6, 'Password must be at least 6 characters')
             .default("")
     });
+
     return (
         <div className='w-full max-h-screen'>
             <Validation schema={request} onSubmit={(e) => {

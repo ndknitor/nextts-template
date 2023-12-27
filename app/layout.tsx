@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { GlobalContextProvider } from '@/context/GlobalContextProvider'
 import ClientToastContainer from '@/components/client/ClientToastContainer'
 
 export const metadata: Metadata = {
@@ -15,9 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GlobalContextProvider>
-        <body>{children}</body>
-      </GlobalContextProvider>
+      <body>{children}</body>
       <ClientToastContainer />
     </html>
   )
