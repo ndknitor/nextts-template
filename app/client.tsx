@@ -18,10 +18,13 @@ export function ValidationTesting() {
             .min(6, 'Password must be at least 6 characters')
             .default("")
     });
-
+    const count = useGlobalCount();
     return (
         <div className='w-full max-h-screen'>
-            <Validation schema={request} onSubmit={(e) => {
+            <h1>{count.value}</h1>
+            <button onClick={count.increase}>Increase</button>
+            <button onClick={count.decrease}>Decrease</button>
+            {/* <Validation schema={request} onSubmit={(e) => {
                 toast.success(e.email);
             }}>
                 <div className='flex w-full h-screen items-center justify-center'>
@@ -37,7 +40,7 @@ export function ValidationTesting() {
                         </div>
                     </div>
                 </div>
-            </Validation>
+            </Validation> */}
         </div>
     );
 }
