@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { ValidationTesting } from './client';
-import { apiGet } from '@/utils/FetchApi';
+import fetcker from '@/utils/fetcker';
 
 export default async function Home() {
-  const response = await apiGet<{ date: string }>("api/main/date", { next: { revalidate: 0 } });  
+  const response = await fetcker.get<{ date: string }>("api/main/date", { next: { revalidate: 0 } });  
   return (
     <main>
       {

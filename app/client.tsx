@@ -2,6 +2,7 @@
 import Validation from '@/components/client/Validation';
 import ValidationInput from '@/components/client/ValidationInput';
 import useGlobalCount from '@/context/hooks/useGlobalCount';
+import fetcker from '@/utils/fetcker';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -21,9 +22,15 @@ export function ValidationTesting() {
     const count = useGlobalCount();
     return (
         <div className='w-full max-h-screen'>
-            <h1>{count.value}</h1>
-            <button onClick={count.increase}>Increase</button>
-            <button onClick={count.decrease}>Decrease</button>
+            <button onClick={() => {
+                fetcker.setAuthorizationBearer("asdasdasdasdasdasdasdas");
+                console.log(fetcker.defaultHeaders!["Authorization"]);
+            }}>Set Header</button>
+            <button onClick={() => {
+                fetcker.defaultHeaders!["Authorization"] &&
+                fetcker.removeAuthorizationBearer();
+            }}>Remove Header</button>
+            <button onClick={async () => await fetcker.get("asdasdasdas")}>Request</button>
             {/* <Validation schema={request} onSubmit={(e) => {
                 toast.success(e.email);
             }}>
