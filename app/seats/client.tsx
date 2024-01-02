@@ -1,5 +1,5 @@
 'use client'
-import { seatService } from '@/services/SeatService';
+import seatService from '@/services/SeatService';
 import React from 'react'
 import { toast } from 'react-toastify';
 

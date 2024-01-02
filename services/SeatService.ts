@@ -5,13 +5,6 @@ import RangeResponse from "@/objects/responses/RangeResponse";
 import fetcker from "@/utils/fetcker";
 import queryString from "query-string";
 
-export const seatService =
-{
-    getPaging,
-    getByIds,
-    insert
-};
-
 const context = "seats";
 const tags = [context];
 const revalidate = 1;
@@ -32,3 +25,12 @@ async function update(seats: USeat[]) {
 async function remove(seatIds: number[]) {
     return await fetcker.delete<RangeResponse<RSeat>>(`${context}?${queryString.stringify({ seatId: seatIds })}`);
 }
+
+const seatService =
+{
+    getPaging,
+    getByIds,
+    insert
+};
+
+export default seatService;
