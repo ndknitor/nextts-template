@@ -1,10 +1,10 @@
 import { RSeat } from '@/objects/entities/Seat';
 import React from 'react'
-import { seatService } from '@/services/SeatService';
 import Pagination from '@/components/shared/Pagination';
 import { NextPageProps } from '@/utils/NextProps';
 import { InsertSeatButton } from './client';
 import OffsetPagingRequest from '@/objects/requests/OffsetPagingRequest';
+import seatService from '@/services/SeatService';
 
 async function page(props: NextPageProps<{}, OffsetPagingRequest<RSeat>>) {
   const searchParams = new OffsetPagingRequest<RSeat>(props.searchParams);
