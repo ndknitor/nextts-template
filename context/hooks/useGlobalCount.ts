@@ -11,6 +11,6 @@ const useGlobalCount = create<GlobalCountState>()(
         set: (v) => setState(state => ({ value: v })),
         increase: () => setState(state => ({ value: state.value + 1 })),
         decrease: () => setState(state => ({ value: state.value - 1 }))
-    }),
+    })
 );
 export default useGlobalCount;

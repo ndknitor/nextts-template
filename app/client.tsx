@@ -28,10 +28,10 @@ export function ValidationTesting() {
                 <div className='flex w-full h-screen items-center justify-center'>
                     <div className='w-9/12'>
                         <div className='h-20'>
-                            <ValidationInput className='w-full h-10 p-3 border-2 border-blue-800 rounded-md' type='text' name='email' placeholder='Email' />
+                            <ValidationInput type='text' name='email' placeholder='Email' />
                         </div>
                         <div className='h-20'>
-                            <ValidationInput className='w-full h-10 p-3 border-2 border-blue-800 rounded-md' type='password' name='password' placeholder='Password' />
+                            <ValidationInput type='password' name='password' placeholder='Password' />
                         </div>
                         <div className='flex w-full justify-center'>
                             <button className='border-blue-900 border-2 p-3 rounded-lg' type='submit'>Submit</button>

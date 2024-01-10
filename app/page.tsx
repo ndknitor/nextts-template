@@ -10,7 +10,6 @@ export default async function Home() {
         <h1>{response.ok && new Date(response.data.date).toLocaleString()}</h1>
       } */}
       <Link href={"/seats?page=1&size=2"}>seats</Link>
-      
       <ValidationTesting />
     </main>
   )
