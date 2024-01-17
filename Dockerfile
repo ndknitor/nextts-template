@@ -3,7 +3,9 @@ WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build
+
 FROM node:18-alpine as final
+RUN apk update && apk upgrade
 WORKDIR /app
 
 COPY --from=build /app/.next/standalone .
