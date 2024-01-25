@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens :{
+        "flip" : "280px",
+        "phone" : "360px",
+        "tablet" : "768px",
+        "desktop" : "992px"
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "axios";
+import { HttpStatusCode } from "fetcker";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         });
         body.revalidated = true;
         body.message = "Revalidate successfully";
-        return NextResponse.json(body, { status: HttpStatusCode.Ok });
+        return NextResponse.json(body, { status: HttpStatusCode.OK });
     } catch (err) {
         body.message = "Server error";
         return NextResponse.json(body, { status: HttpStatusCode.InternalServerError });
