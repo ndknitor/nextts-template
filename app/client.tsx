@@ -52,7 +52,7 @@ export function ValidationTesting() {
                         <ValidationInput formik={formik} type='password' name='password' placeholder='Password' />
                     </div>
                     <div className='h-20'>
-                        <ValidationDatePicker formik={formik} name='date' />
+                        <ValidationDatePicker formik={formik} name='date' type='datetime-local' />
                     </div>
                     <div className='flex w-full justify-center'>
                         <button className='border-blue-900 border-2 p-3 rounded-lg' onClick={() => formik.handleSubmit()}>Submit</button>

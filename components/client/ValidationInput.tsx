@@ -1,4 +1,4 @@
-import { Field, FieldMetaProps, FieldProps } from 'formik'
+import { FieldMetaProps } from 'formik'
 import React, { InputHTMLAttributes } from 'react'
 import HelperText from './HelperText'
 interface ValidationInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -23,6 +23,8 @@ function ValidationInput(props: ValidationInputProps) {
             <input
                 placeholder={props.placeholder}
                 {...props}
+                onBlur={props.formik.handleBlur(props.name)}
+                onChange={props.formik.handleChange(props.name)}
                 className={props.className || 'w-full h-10 p-3 border-b-2'}
             />
             <div className='p-1'>
