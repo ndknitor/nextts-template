@@ -60,7 +60,7 @@ function ValidationDatePicker(props: ValidationDatePickerProps) {
 
         <>
             <div
-                className={`w-full h-10 border-b-2 ${meta.value || "text-gray-400"}`}
+                className={`w-full h-10 ${meta.value || "text-gray-400"}`}
                 onClick={() => {
                     //setIsOpen(true)
                 }}>
@@ -69,7 +69,7 @@ function ValidationDatePicker(props: ValidationDatePickerProps) {
                     type={props.type || "date"}
                     onBlur={props.formik.handleBlur(props.name)}
                     onChange={props.formik.handleChange(props.name)}
-                    className={props.className || 'w-full h-10 p-3 border-b-2'} />
+                    className={props.className || `w-full px-4 py-2 text-sm border-b ${meta.touched && Boolean(meta.error) ? "border-b-red-600" : "border-b-gray-300" } hover:border-blue-400 transition-colors duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`} />
                 {/* {getText(meta.value)} */}
             </div>
             <div className='p-1'>

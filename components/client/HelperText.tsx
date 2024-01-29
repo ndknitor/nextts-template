@@ -5,7 +5,7 @@ interface HelperTextProps {
 }
 function HelperText({ show, text }: HelperTextProps) {
     return (
-        <p className={`transition-opacity text-red-600 ease-in duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}>
+        <p className={`text-sm transition-opacity text-red-600 ease-in duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}>
             {text}
         </p>
     );

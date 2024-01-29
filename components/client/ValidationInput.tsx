@@ -25,7 +25,8 @@ function ValidationInput(props: ValidationInputProps) {
                 {...props}
                 onBlur={props.formik.handleBlur(props.name)}
                 onChange={props.formik.handleChange(props.name)}
-                className={props.className || 'w-full h-10 p-3 border-b-2'}
+                className={props.className || `w-full px-4 py-2 text-sm border-b ${meta.touched && Boolean(meta.error) ? "border-b-red-600" : "border-b-gray-300" } hover:border-blue-400 transition-colors duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75` //||'w-full h-10 p-3 border-b-2'
+                }
             />
             <div className='p-1'>
                 <HelperText show={meta.touched && Boolean(meta.error)} text={meta.touched ? meta.error : ""} />
