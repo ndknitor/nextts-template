@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "fetcker": "^1.0.5",
     "formik": "^2.4.5",
     "linq-to-typescript": "^11.1.0",

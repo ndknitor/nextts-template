@@ -3,7 +3,6 @@ import ValidationDatePicker from '@/components/client/ValidationDatePicker';
 import ValidationInput from '@/components/client/ValidationInput';
 import useGlobalCount from '@/context/hooks/useGlobalCount';
 import { useFormik } from 'formik';
-import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 export function ValidationTesting() {
@@ -38,10 +37,15 @@ export function ValidationTesting() {
         },
     });
     const count = useGlobalCount();
-
-
     return (
         <div className='w-full max-h-screen'>
+            <div className="inset-0 flex items-center justify-center">
+                <button
+                    type="button"
+                    className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
+                    Open dialog
+                </button>
+            </div>
             <button className='border-gray-700 border-2 w-16' onClick={() => count.increase()}>{count.value}</button>
             <div className='flex w-full h-screen items-center justify-center'>
                 <div className='w-9/12'>
