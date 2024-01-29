@@ -65,7 +65,6 @@ function ValidationDatePicker(props: ValidationDatePickerProps) {
                     //setIsOpen(true)
                 }}>
                 <input
-                    {...props}
                     type={props.type || "date"}
                     onBlur={props.formik.handleBlur(props.name)}
                     onChange={props.formik.handleChange(props.name)}
