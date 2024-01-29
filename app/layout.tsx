@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import ClientToastContainer from '@/components/client/ClientToastContainer'
+import { DialogContainer } from '@/components/client/DialogContainer'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>{children}</body>
       <ClientToastContainer />
+      <DialogContainer />
     </html>
   )
 }

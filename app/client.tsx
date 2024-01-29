@@ -2,8 +2,10 @@
 import ValidationDatePicker from '@/components/client/ValidationDatePicker';
 import ValidationInput from '@/components/client/ValidationInput';
 import useGlobalCount from '@/context/hooks/useGlobalCount';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import dialog from '@/components/client/DialogContainer';
 
 export function ValidationTesting() {
     const request = Yup.object().shape({
@@ -16,24 +18,13 @@ export function ValidationTesting() {
             .string()
             .required('Password is required')
             .min(6, 'Password must be at least 6 characters')
-            .default(""),
-        date: Yup
-            .date()
-            .required('Date is required')
+            .default("")
     });
     const formik = useFormik({
         initialValues: request.getDefault(),
         validationSchema: request,
         onSubmit: (values) => {
-            console.log(values);
-            // Toast.show('Địt mẹ mày', {
-            //   duration: Toast.durations.LONG,
-            //   position: Toast.positions.BOTTOM,
-            //   shadow: false,
-            //   animation: true,
-            //   hideOnPress: true,
-            //   delay: 0,
-            // });
+            toast.info("Wow so easy!");
         },
     });
     const count = useGlobalCount();
@@ -41,6 +32,7 @@ export function ValidationTesting() {
         <div className='w-full max-h-screen'>
             <div className="inset-0 flex items-center justify-center">
                 <button
+                    onClick={() => dialog.info("This is the body")}
                     type="button"
                     className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
                     Open dialog
@@ -54,9 +46,6 @@ export function ValidationTesting() {
                     </div>
                     <div className='h-20'>
                         <ValidationInput formik={formik} type='password' name='password' placeholder='Password' />
-                    </div>
-                    <div className='h-20'>
-                        <ValidationDatePicker formik={formik} name='date' type='date' />
                     </div>
                     <div className='flex w-full justify-center'>
                         <button className='border-blue-900 border-2 p-3 rounded-lg' onClick={() => formik.handleSubmit()}>Submit</button>
