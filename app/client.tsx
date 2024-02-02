@@ -32,7 +32,7 @@ export function ValidationTesting() {
         <div className='w-full max-h-screen'>
             <div className="inset-0 flex items-center justify-center">
                 <button
-                    onClick={() => dialog.confirm(() => {
+                    onClick={() => dialog.warn(() => {
                         toast.info("Dit me may")
                     }, <h1>This is the body</h1>)}
                     type="button"

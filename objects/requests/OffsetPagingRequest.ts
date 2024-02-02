@@ -1,3 +1,5 @@
+import { NEXT_PUBLIC_MAXPAGE } from "@/env";
+
 export default class OffsetPagingRequest<T> {
     orderBy: Array<keyof T> = [];
     desc: boolean[] = [];
@@ -15,7 +17,7 @@ export default class OffsetPagingRequest<T> {
             this.size = self.size;
         }
         else {
-            this.size = parseInt(process.env.NEXT_PUBLIC_MAXPAGE.toString());
+            this.size = parseInt(NEXT_PUBLIC_MAXPAGE.toString());
         }
     }
 }

@@ -1,9 +1,10 @@
+import { NEXT_PUBLIC_API_BASE_URL, NEXT_PUBLIC_REQUEST_TIMEOUT } from "@/env";
 import { createFetcker } from "fetcker";
 import { toast } from "react-toastify";
 
 const fetcker = createFetcker({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-    requestTimeOut: parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT),
+    baseUrl: NEXT_PUBLIC_API_BASE_URL,
+    requestTimeOut: NEXT_PUBLIC_REQUEST_TIMEOUT,
     onError: (error, isClient) => {
         if (isClient) {
             let message = "";

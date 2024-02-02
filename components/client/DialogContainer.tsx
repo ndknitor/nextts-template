@@ -6,6 +6,7 @@ const dialog = {
     error: (message: string | ReactElement, title?: string, confirmText?: string) => { },
     success: (message: string | ReactElement, title?: string, confirmText?: string) => { },
     confirm: (onConfirm: () => void | Promise<void>, message: string | ReactElement, title?: string, confirmText?: string, cancelText?: string) => { },
+    warn: (onConfirm: () => void | Promise<void>, message: string | ReactElement, title?: string, confirmText?: string, cancelText?: string) => { },
 };
 export default dialog;
 export function DialogContainer() {
@@ -14,7 +15,7 @@ export function DialogContainer() {
     const [message, setMessage] = useState<string | ReactElement>("");
     const [confirmText, setConfirmText] = useState<string>();
     const [cancelText, setCancelText] = useState("Cancel");
-    const [dialogType, setDialogType] = useState<"info" | "error" | "success" | "confirm">("info");
+    const [dialogType, setDialogType] = useState<"info" | "error" | "success" | "confirm" | "warn">("info");
 
     const onConfirm = useRef<() => void | Promise<void>>();
 
@@ -47,7 +48,16 @@ export function DialogContainer() {
         setMessage(message);
         setDialogType("confirm");
         setConfirmText(confirmText);
-        setTitle(title || "Confirm");
+        setTitle(title || "Confirmation");
+        setCancelText(cancelText || "Cancel");
+        setIsOpen(true);
+        onConfirm.current = onConfirmF;
+    }
+    function warn(onConfirmF: () => void | Promise<void>, message: string | ReactElement, title?: string, confirmText?: string, cancelText?: string) {
+        setMessage(message);
+        setDialogType("warn");
+        setConfirmText(confirmText);
+        setTitle(title || "Confirmation");
         setCancelText(cancelText || "Cancel");
         setIsOpen(true);
         onConfirm.current = onConfirmF;
@@ -58,6 +68,7 @@ export function DialogContainer() {
             dialog.error = error;
             dialog.success = success;
             dialog.confirm = confirm;
+            dialog.warn = warn;
         }
     }, []);
     return (
@@ -111,13 +122,15 @@ export function DialogContainer() {
                                 <div className="mt-4 flex w-full justify-end gap-4">
 
                                     {
-                                        dialogType === "confirm" &&
-                                        <button
-                                            type="button"
-                                            className={`rounded-md border border-transparent px-4 py-2 text-sm font-medium focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-2 text-blue-900 bg-blue-100 hover:bg-blue-200 focus-visible:ring-blue-500`}
-                                            onClick={closeModal}>
-                                            {cancelText}
-                                        </button>
+                                        dialogType === "confirm" || dialogType === "warn" ?
+                                            <button
+                                                type="button"
+                                                className={`rounded-md border border-transparent px-4 py-2 text-sm font-medium focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-2 text-blue-900 bg-blue-100 hover:bg-blue-200 focus-visible:ring-blue-500`}
+                                                onClick={closeModal}>
+                                                {cancelText}
+                                            </button>
+                                            :
+                                            null
                                     }
 
                                     <button
@@ -128,6 +141,7 @@ export function DialogContainer() {
                                                 case "success": return "text-green-900 bg-green-100 hover:bg-green-200 focus-visible:ring-green-500"
                                                 case "error": return "text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
                                                 case "confirm": return "text-green-900 bg-green-100 hover:bg-green-200 focus-visible:ring-green-500"
+                                                case "warn": return "text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500";
                                             }
                                         })()}`}
                                         onClick={async () => {
