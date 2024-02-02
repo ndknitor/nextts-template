@@ -15,7 +15,7 @@ function ClientToastContainer() {
     }
     else {
         return (
-            <></>
+            null
         );
     }
 }

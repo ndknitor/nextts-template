@@ -1,25 +1,63 @@
 'use client'
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, ReactElement, useEffect, useState } from 'react'
+import React, { Fragment, ReactElement, useEffect, useRef, useState } from 'react'
 const dialog = {
-    info: (message: string, title?: string) => { },
+    info: (message: string | ReactElement, title?: string, confirmText?: string) => { },
+    error: (message: string | ReactElement, title?: string, confirmText?: string) => { },
+    success: (message: string | ReactElement, title?: string, confirmText?: string) => { },
+    confirm: (onConfirm: () => void | Promise<void>, message: string | ReactElement, title?: string, confirmText?: string, cancelText?: string) => { },
 };
 export default dialog;
 export function DialogContainer() {
     const [isOpen, setIsOpen] = useState(false);
     const [title, setTitle] = useState("");
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState<string | ReactElement>("");
+    const [confirmText, setConfirmText] = useState<string>();
+    const [cancelText, setCancelText] = useState("Cancel");
+    const [dialogType, setDialogType] = useState<"info" | "error" | "success" | "confirm">("info");
+
+    const onConfirm = useRef<() => void | Promise<void>>();
+
     function closeModal() {
-        setIsOpen(false)
+        setIsOpen(false);
+        setConfirmText(undefined);
     }
-    function info(message: string, title?: string) {
+    function info(message: string | ReactElement, title?: string, confirmText?: string) {
         setMessage(message);
+        setDialogType("info");
         setTitle(title || "Information");
+        setConfirmText(confirmText);
         setIsOpen(true);
+    }
+    function error(message: string | ReactElement, title?: string, confirmText?: string) {
+        setMessage(message);
+        setDialogType("error");
+        setConfirmText(confirmText);
+        setTitle(title || "Error");
+        setIsOpen(true);
+    }
+    function success(message: string | ReactElement, title?: string, confirmText?: string) {
+        setMessage(message);
+        setDialogType("success");
+        setConfirmText(confirmText);
+        setTitle(title || "Success");
+        setIsOpen(true);
+    }
+    function confirm(onConfirmF: () => void | Promise<void>, message: string | ReactElement, title?: string, confirmText?: string, cancelText?: string) {
+        setMessage(message);
+        setDialogType("confirm");
+        setConfirmText(confirmText);
+        setTitle(title || "Confirm");
+        setCancelText(cancelText || "Cancel");
+        setIsOpen(true);
+        onConfirm.current = onConfirmF;
     }
     useEffect(() => {
         if (dialog) {
             dialog.info = info;
+            dialog.error = error;
+            dialog.success = success;
+            dialog.confirm = confirm;
         }
     }, []);
     return (
@@ -56,24 +94,56 @@ export function DialogContainer() {
                                     {title}
                                 </Dialog.Title>
                                 <div className="mt-2">
-                                    <p className="text-sm text-gray-500">
-                                        {message}
-                                    </p>
+                                    {
+                                        typeof message == "string" ?
+                                            <p className="text-sm text-gray-500">
+                                                {message}
+                                            </p>
+                                            :
+                                            <>
+                                                {message}
+                                            </>
+                                    }
+
+
                                 </div>
 
-                                <div className="mt-4 flex w-full justify-end">
+                                <div className="mt-4 flex w-full justify-end gap-4">
+
+                                    {
+                                        dialogType === "confirm" &&
+                                        <button
+                                            type="button"
+                                            className={`rounded-md border border-transparent px-4 py-2 text-sm font-medium focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-2 text-blue-900 bg-blue-100 hover:bg-blue-200 focus-visible:ring-blue-500`}
+                                            onClick={closeModal}>
+                                            {cancelText}
+                                        </button>
+                                    }
+
                                     <button
                                         type="button"
-                                        className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                        onClick={closeModal}>
-                                        Ok
+                                        className={`rounded-md border border-transparent px-4 py-2 text-sm font-medium focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-2 ${(() => {
+                                            switch (dialogType) {
+                                                case "info": return "text-blue-900 bg-blue-100 hover:bg-blue-200 focus-visible:ring-blue-500"
+                                                case "success": return "text-green-900 bg-green-100 hover:bg-green-200 focus-visible:ring-green-500"
+                                                case "error": return "text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
+                                                case "confirm": return "text-green-900 bg-green-100 hover:bg-green-200 focus-visible:ring-green-500"
+                                            }
+                                        })()}`}
+                                        onClick={async () => {
+                                            onConfirm.current && await onConfirm.current();
+                                            onConfirm.current = undefined;
+                                            closeModal();
+                                        }}>
+                                        {confirmText || "Ok"}
                                     </button>
+
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
                 </div>
             </Dialog>
-        </Transition>
+        </Transition >
     )
 };

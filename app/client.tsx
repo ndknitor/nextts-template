@@ -32,7 +32,9 @@ export function ValidationTesting() {
         <div className='w-full max-h-screen'>
             <div className="inset-0 flex items-center justify-center">
                 <button
-                    onClick={() => dialog.info("This is the body")}
+                    onClick={() => dialog.confirm(() => {
+                        toast.info("Dit me may")
+                    }, <h1>This is the body</h1>)}
                     type="button"
                     className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
                     Open dialog
