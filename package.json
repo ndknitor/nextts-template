@@ -9,30 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^2.1.2",
+    "@headlessui/react": "^2.2.0",
     "fetcker": "^1.0.5",
     "formik": "^2.4.6",
     "linq-to-typescript": "^11.1.0",
     "moment": "^2.30.1",
     "ndknitor-ts": "^2.0.3",
-    "next": "^14.2.5",
+    "next": "15.0.1",
     "object-to-formdata": "^4.5.1",
-    "query-string": "^9.1.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-toastify": "^10.0.5",
+    "query-string": "^9.1.1",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "react-toastify": "^10.0.6",
     "yup": "^1.4.0",
-    "zustand": "^4.5.5"
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.3.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.9.0",
-    "eslint-config-next": "^14.2.5",
-    "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.10",
-    "typescript": "^5.5.4"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

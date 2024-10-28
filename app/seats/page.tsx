@@ -6,12 +6,12 @@ import { InsertSeatButton } from './client';
 import OffsetPagingRequest from '@/objects/requests/OffsetPagingRequest';
 import seatService from '@/services/SeatService';
 
-async function page(props: NextPageProps<{}, OffsetPagingRequest<RSeat>>) {
-  const searchParams = new OffsetPagingRequest<RSeat>(props.searchParams);
-  const seats = await seatService.getPaging(searchParams);
+async function page(props: {}) {
+  //const searchParams = new OffsetPagingRequest<RSeat>(props.searchParams);
+  //const seats = await seatService.getPaging(searchParams);
   return (
     <main>
-      {
+      {/* {
         seats.ok && seats.data.data.map(item =>
           <div key={`Seat${item.seatId}`}>
             <h1>Seat Id: {item.seatId}</h1>
@@ -20,13 +20,13 @@ async function page(props: NextPageProps<{}, OffsetPagingRequest<RSeat>>) {
             <br />
           </div>
         )
-      }
-      <Pagination
+      } */}
+      {/* <Pagination
         navigateUrl={(p) => `/seats?page=${p}&size=${searchParams.size}`}
         maxPage={seats.data.maxPage}
         page={searchParams.page}
       />
-      <InsertSeatButton />
+      <InsertSeatButton /> */}
     </main>
   )
 }

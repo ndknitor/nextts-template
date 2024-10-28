@@ -15,9 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
-      <ClientToastContainer />
-      <DialogContainer />
+      <body>
+        {children}
+        <ClientToastContainer />
+        <DialogContainer />
+      </body>
     </html>
   )
 }
